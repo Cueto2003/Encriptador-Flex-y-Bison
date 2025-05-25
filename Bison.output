@@ -1,0 +1,381 @@
+Terminals unused in grammar
+
+    ERROR
+    HASH
+
+
+Grammar
+
+    0 $accept: prog $end
+
+    1 prog: ε
+    2     | bloques
+
+    3 bloques: bloque
+    4        | bloques bloque
+
+    5 bloque: ENTRADAHASH elementos
+    6       | FLECHA elementosdos
+
+    7 elementosdos: pre_enter ENTER post_enter
+
+    8 pre_enter: elemento_pre
+    9          | pre_enter elemento_pre
+
+   10 elemento_pre: CHARMA
+   11             | CHARMI
+   12             | PUNCTFASTA
+   13             | ENTERO
+
+   14 post_enter: elemento_post
+   15           | post_enter elemento_post
+
+   16 elemento_post: CHARMA
+   17              | PUNCTFASTA
+   18              | ENTERO
+   19              | ENTER
+
+   20 elementos: elemento elementos
+   21          | ε
+
+   22 elemento: CHARMA
+   23         | PUNCT
+   24         | SPACE
+   25         | ENTER
+   26         | CHARMI
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    ENTRADAHASH (258) 5
+    CHARMA <palabra> (259) 10 16 22
+    CHARMI <palabra> (260) 11 26
+    PUNCT <palabra> (261) 23
+    ENTERO (262) 13 18
+    ERROR (263)
+    HASH (264)
+    FLECHA (265) 6
+    PUNCTFASTA (266) 12 17
+    SPACE (267) 24
+    ENTER (268) 7 19 25
+
+
+Nonterminals, with rules where they appear
+
+    $accept (14)
+        on left: 0
+    prog (15)
+        on left: 1 2
+        on right: 0
+    bloques (16)
+        on left: 3 4
+        on right: 2 4
+    bloque (17)
+        on left: 5 6
+        on right: 3 4
+    elementosdos (18)
+        on left: 7
+        on right: 6
+    pre_enter (19)
+        on left: 8 9
+        on right: 7 9
+    elemento_pre (20)
+        on left: 10 11 12 13
+        on right: 8 9
+    post_enter (21)
+        on left: 14 15
+        on right: 7 15
+    elemento_post (22)
+        on left: 16 17 18 19
+        on right: 14 15
+    elementos (23)
+        on left: 20 21
+        on right: 5 20
+    elemento (24)
+        on left: 22 23 24 25 26
+        on right: 20
+
+
+State 0
+
+    0 $accept: • prog $end
+
+    ENTRADAHASH  shift, and go to state 1
+    FLECHA       shift, and go to state 2
+
+    $default  reduce using rule 1 (prog)
+
+    prog     go to state 3
+    bloques  go to state 4
+    bloque   go to state 5
+
+
+State 1
+
+    5 bloque: ENTRADAHASH • elementos
+
+    CHARMA  shift, and go to state 6
+    CHARMI  shift, and go to state 7
+    PUNCT   shift, and go to state 8
+    SPACE   shift, and go to state 9
+    ENTER   shift, and go to state 10
+
+    $default  reduce using rule 21 (elementos)
+
+    elementos  go to state 11
+    elemento   go to state 12
+
+
+State 2
+
+    6 bloque: FLECHA • elementosdos
+
+    CHARMA      shift, and go to state 13
+    CHARMI      shift, and go to state 14
+    ENTERO      shift, and go to state 15
+    PUNCTFASTA  shift, and go to state 16
+
+    elementosdos  go to state 17
+    pre_enter     go to state 18
+    elemento_pre  go to state 19
+
+
+State 3
+
+    0 $accept: prog • $end
+
+    $end  shift, and go to state 20
+
+
+State 4
+
+    2 prog: bloques •
+    4 bloques: bloques • bloque
+
+    ENTRADAHASH  shift, and go to state 1
+    FLECHA       shift, and go to state 2
+
+    $default  reduce using rule 2 (prog)
+
+    bloque  go to state 21
+
+
+State 5
+
+    3 bloques: bloque •
+
+    $default  reduce using rule 3 (bloques)
+
+
+State 6
+
+   22 elemento: CHARMA •
+
+    $default  reduce using rule 22 (elemento)
+
+
+State 7
+
+   26 elemento: CHARMI •
+
+    $default  reduce using rule 26 (elemento)
+
+
+State 8
+
+   23 elemento: PUNCT •
+
+    $default  reduce using rule 23 (elemento)
+
+
+State 9
+
+   24 elemento: SPACE •
+
+    $default  reduce using rule 24 (elemento)
+
+
+State 10
+
+   25 elemento: ENTER •
+
+    $default  reduce using rule 25 (elemento)
+
+
+State 11
+
+    5 bloque: ENTRADAHASH elementos •
+
+    $default  reduce using rule 5 (bloque)
+
+
+State 12
+
+   20 elementos: elemento • elementos
+
+    CHARMA  shift, and go to state 6
+    CHARMI  shift, and go to state 7
+    PUNCT   shift, and go to state 8
+    SPACE   shift, and go to state 9
+    ENTER   shift, and go to state 10
+
+    $default  reduce using rule 21 (elementos)
+
+    elementos  go to state 22
+    elemento   go to state 12
+
+
+State 13
+
+   10 elemento_pre: CHARMA •
+
+    $default  reduce using rule 10 (elemento_pre)
+
+
+State 14
+
+   11 elemento_pre: CHARMI •
+
+    $default  reduce using rule 11 (elemento_pre)
+
+
+State 15
+
+   13 elemento_pre: ENTERO •
+
+    $default  reduce using rule 13 (elemento_pre)
+
+
+State 16
+
+   12 elemento_pre: PUNCTFASTA •
+
+    $default  reduce using rule 12 (elemento_pre)
+
+
+State 17
+
+    6 bloque: FLECHA elementosdos •
+
+    $default  reduce using rule 6 (bloque)
+
+
+State 18
+
+    7 elementosdos: pre_enter • ENTER post_enter
+    9 pre_enter: pre_enter • elemento_pre
+
+    CHARMA      shift, and go to state 13
+    CHARMI      shift, and go to state 14
+    ENTERO      shift, and go to state 15
+    PUNCTFASTA  shift, and go to state 16
+    ENTER       shift, and go to state 23
+
+    elemento_pre  go to state 24
+
+
+State 19
+
+    8 pre_enter: elemento_pre •
+
+    $default  reduce using rule 8 (pre_enter)
+
+
+State 20
+
+    0 $accept: prog $end •
+
+    $default  accept
+
+
+State 21
+
+    4 bloques: bloques bloque •
+
+    $default  reduce using rule 4 (bloques)
+
+
+State 22
+
+   20 elementos: elemento elementos •
+
+    $default  reduce using rule 20 (elementos)
+
+
+State 23
+
+    7 elementosdos: pre_enter ENTER • post_enter
+
+    CHARMA      shift, and go to state 25
+    ENTERO      shift, and go to state 26
+    PUNCTFASTA  shift, and go to state 27
+    ENTER       shift, and go to state 28
+
+    post_enter     go to state 29
+    elemento_post  go to state 30
+
+
+State 24
+
+    9 pre_enter: pre_enter elemento_pre •
+
+    $default  reduce using rule 9 (pre_enter)
+
+
+State 25
+
+   16 elemento_post: CHARMA •
+
+    $default  reduce using rule 16 (elemento_post)
+
+
+State 26
+
+   18 elemento_post: ENTERO •
+
+    $default  reduce using rule 18 (elemento_post)
+
+
+State 27
+
+   17 elemento_post: PUNCTFASTA •
+
+    $default  reduce using rule 17 (elemento_post)
+
+
+State 28
+
+   19 elemento_post: ENTER •
+
+    $default  reduce using rule 19 (elemento_post)
+
+
+State 29
+
+    7 elementosdos: pre_enter ENTER post_enter •
+   15 post_enter: post_enter • elemento_post
+
+    CHARMA      shift, and go to state 25
+    ENTERO      shift, and go to state 26
+    PUNCTFASTA  shift, and go to state 27
+    ENTER       shift, and go to state 28
+
+    $default  reduce using rule 7 (elementosdos)
+
+    elemento_post  go to state 31
+
+
+State 30
+
+   14 post_enter: elemento_post •
+
+    $default  reduce using rule 14 (post_enter)
+
+
+State 31
+
+   15 post_enter: post_enter elemento_post •
+
+    $default  reduce using rule 15 (post_enter)
