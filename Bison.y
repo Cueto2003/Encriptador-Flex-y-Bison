@@ -11,6 +11,8 @@
     extern int yyparse();
     extern void yylex_destroy();
     extern void yyrestart(FILE *input_file);
+
+    void extern push_buffer_for_file(FILE *f);
 %}
 
 %union {
@@ -22,7 +24,7 @@
 }
 
 
-%token      ENTRADAHASH
+%token <filename> ENTRADAHASH
 %token <palabra>  CHARMA
 %token <palabra>  CHARMI
 %token <palabra>  PUNCT
@@ -54,7 +56,20 @@ bloques:
 ;
 
 bloque:
-    ENTRADAHASH elementos
+    ENTRADAHASH 
+    {
+        printf("Nombre de fichero: %s\n", $1);
+
+        /* abrir y empujar buffer… */
+        FILE *f = fopen($1,"r");
+        if(!f){
+            printf("El archivo : %s no existe", $1); 
+            return EXIT_FAILURE; 
+        }
+        if (f) push_buffer_for_file(f);
+    }
+    
+    elementos
     | FLECHA elementosdos
 ;
 

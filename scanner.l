@@ -2,9 +2,17 @@
     #include <stdio.h>
     #include <string.h>
     #include "Bison.tab.h"
+    #include <unordered_map> // hacer alfabeto A-T
     void showError(char* other);
 
+    static YY_BUFFER_STATE prev             = NULL;
+
+    void push_buffer_for_file(FILE *f);
+
+    unsigned int intentosMax = 0;
+    unsigned int configDesfase = 0;
     
+
 %}
 
 PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
@@ -13,7 +21,7 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
 %%
 
 \n {
-    printf("Salto de linea");
+    
     return ENTER; 
 }
 
@@ -23,22 +31,21 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
     /* yytext = "#File1.fasta,10,2" */
     char fname[256];
     int n1, n2;
-    if (sscanf(yytext + 1, "%255[^,],%d,%d", fname, &n1, &n2) == 3) {
-        printf("numero1: %d\n", n1);
-        printf("numero2: %d\n", n2);
+    if (sscanf(yytext + 1, "%255[^,],%d,%d", fname, &configDesfase, &configDesfase) == 3) {
+        printf("numero1: %d\n", configDesfase);
+        printf("numero2: %d\n", configDesfase);
         printf("File Name: %s\n", fname);
-    
+        yylval.filename = fname;
         return ENTRADAHASH;
     }
 }
 
 ">lcl|" {
-    printf("FLECHA ");
+    
     return FLECHA;
 }
 
 " " {
-    printf("SPACE  ");
     return SPACE;
 }
 
@@ -48,12 +55,10 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
     }
 
 [:_.]   {
-        printf("PUNCTDOS ");
         return PUNCTFASTA;
         }
 
 [0-9]     {
-            printf("Entero ");
             yylval.num = atoi(yytext);
             return ENTERO;
         }
@@ -73,7 +78,6 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
     }
 
 [a-z] {
-    printf("CHARMI ");
     yylval.palabra = strdup(yytext);
     return CHARMI;
     }
@@ -94,3 +98,11 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
 %%
 
 int yywrap(void) { return 1; }
+
+void push_buffer_for_file(FILE *f) {
+
+    prev = YY_CURRENT_BUFFER; 
+    YY_BUFFER_STATE newb = yy_create_buffer(f, YY_BUF_SIZE);
+    yy_switch_to_buffer(newb);
+}
+

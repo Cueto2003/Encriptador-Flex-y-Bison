@@ -82,7 +82,9 @@
     extern void yylex_destroy();
     extern void yyrestart(FILE *input_file);
 
-#line 86 "Bison.tab.c"
+    void extern push_buffer_for_file(FILE *f);
+
+#line 88 "Bison.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -128,13 +130,14 @@ enum yysymbol_kind_t
   YYSYMBOL_prog = 15,                      /* prog  */
   YYSYMBOL_bloques = 16,                   /* bloques  */
   YYSYMBOL_bloque = 17,                    /* bloque  */
-  YYSYMBOL_elementosdos = 18,              /* elementosdos  */
-  YYSYMBOL_pre_enter = 19,                 /* pre_enter  */
-  YYSYMBOL_elemento_pre = 20,              /* elemento_pre  */
-  YYSYMBOL_post_enter = 21,                /* post_enter  */
-  YYSYMBOL_elemento_post = 22,             /* elemento_post  */
-  YYSYMBOL_elementos = 23,                 /* elementos  */
-  YYSYMBOL_elemento = 24                   /* elemento  */
+  YYSYMBOL_18_1 = 18,                      /* $@1  */
+  YYSYMBOL_elementosdos = 19,              /* elementosdos  */
+  YYSYMBOL_pre_enter = 20,                 /* pre_enter  */
+  YYSYMBOL_elemento_pre = 21,              /* elemento_pre  */
+  YYSYMBOL_post_enter = 22,                /* post_enter  */
+  YYSYMBOL_elemento_post = 23,             /* elemento_post  */
+  YYSYMBOL_elementos = 24,                 /* elementos  */
+  YYSYMBOL_elemento = 25                   /* elemento  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -460,18 +463,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  20
+#define YYFINAL  14
 /* YYLAST -- Last index in YYTABLE.  */
 #define YYLAST   28
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  14
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  11
+#define YYNNTS  12
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  27
+#define YYNRULES  28
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  32
+#define YYNSTATES  33
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   268
@@ -521,9 +524,9 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    45,    45,    48,    52,    53,    57,    58,    62,    66,
-      67,    71,    72,    73,    74,    78,    79,    83,    84,    85,
-      86,    90,    91,    96,    97,    98,    99,   100
+       0,    47,    47,    50,    54,    55,    60,    59,    73,    77,
+      81,    82,    86,    87,    88,    89,    93,    94,    98,    99,
+     100,   101,   105,   106,   111,   112,   113,   114,   115
 };
 #endif
 
@@ -542,7 +545,7 @@ static const char *const yytname[] =
   "\"end of file\"", "error", "\"invalid token\"", "ENTRADAHASH",
   "CHARMA", "CHARMI", "PUNCT", "ENTERO", "ERROR", "HASH", "FLECHA",
   "PUNCTFASTA", "SPACE", "ENTER", "$accept", "prog", "bloques", "bloque",
-  "elementosdos", "pre_enter", "elemento_pre", "post_enter",
+  "$@1", "elementosdos", "pre_enter", "elemento_pre", "post_enter",
   "elemento_post", "elementos", "elemento", YY_NULLPTR
 };
 
@@ -553,7 +556,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-15)
+#define YYPACT_NINF (-16)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -567,10 +570,10 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      18,    -4,    12,     5,    18,   -15,   -15,   -15,   -15,   -15,
-     -15,   -15,    -4,   -15,   -15,   -15,   -15,   -15,    -1,   -15,
-     -15,   -15,   -15,     7,   -15,   -15,   -15,   -15,   -15,     7,
-     -15,   -15
+      18,   -16,    12,     5,    18,   -16,    -4,   -16,   -16,   -16,
+     -16,   -16,    -1,   -16,   -16,   -16,   -16,   -16,   -16,   -16,
+     -16,   -16,    -4,     7,   -16,   -16,   -16,   -16,   -16,   -16,
+       7,   -16,   -16
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -578,24 +581,24 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,    22,     0,     0,     3,     4,    23,    27,    24,    25,
-      26,     6,    22,    11,    12,    14,    13,     7,     0,     9,
-       1,     5,    21,     0,    10,    17,    19,    18,    20,     8,
-      15,    16
+       2,     6,     0,     0,     3,     4,    23,    12,    13,    15,
+      14,     8,     0,    10,     1,     5,    24,    28,    25,    26,
+      27,     7,    23,     0,    11,    22,    18,    20,    19,    21,
+       9,    16,    17
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -15,   -15,   -15,     3,   -15,   -15,    -5,   -15,   -14,    10,
-     -15
+     -16,   -16,   -16,     3,   -16,   -16,   -16,     1,   -16,   -15,
+       0,   -16
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     3,     4,     5,    17,    18,    19,    29,    30,    11,
-      12
+       0,     3,     4,     5,     6,    11,    12,    13,    30,    31,
+      21,    22
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -603,42 +606,42 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       6,     7,     8,    13,    14,    20,    15,    21,     9,    10,
-      16,    25,    23,    24,    26,    31,    13,    14,    27,    15,
-      28,     1,    22,    16,     0,     0,     0,     0,     2
+      16,    17,    18,     7,     8,    14,     9,    15,    19,    20,
+      10,    26,    23,    24,    27,    32,     7,     8,    28,     9,
+      29,     1,    25,    10,     0,     0,     0,     0,     2
 };
 
 static const yytype_int8 yycheck[] =
 {
        4,     5,     6,     4,     5,     0,     7,     4,    12,    13,
-      11,     4,    13,    18,     7,    29,     4,     5,    11,     7,
-      13,     3,    12,    11,    -1,    -1,    -1,    -1,    10
+      11,     4,    13,    12,     7,    30,     4,     5,    11,     7,
+      13,     3,    22,    11,    -1,    -1,    -1,    -1,    10
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,    10,    15,    16,    17,     4,     5,     6,    12,
-      13,    23,    24,     4,     5,     7,    11,    18,    19,    20,
-       0,    17,    23,    13,    20,     4,     7,    11,    13,    21,
-      22,    22
+       0,     3,    10,    15,    16,    17,    18,     4,     5,     7,
+      11,    19,    20,    21,     0,    17,     4,     5,     6,    12,
+      13,    24,    25,    13,    21,    24,     4,     7,    11,    13,
+      22,    23,    23
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    14,    15,    15,    16,    16,    17,    17,    18,    19,
-      19,    20,    20,    20,    20,    21,    21,    22,    22,    22,
-      22,    23,    23,    24,    24,    24,    24,    24
+       0,    14,    15,    15,    16,    16,    18,    17,    17,    19,
+      20,    20,    21,    21,    21,    21,    22,    22,    23,    23,
+      23,    23,    24,    24,    25,    25,    25,    25,    25
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     1,     1,     2,     2,     2,     3,     1,
-       2,     1,     1,     1,     1,     1,     2,     1,     1,     1,
-       1,     2,     0,     1,     1,     1,     1,     1
+       0,     2,     0,     1,     1,     2,     0,     3,     2,     3,
+       1,     2,     1,     1,     1,     1,     1,     2,     1,     1,
+       1,     1,     2,     0,     1,     1,     1,     1,     1
 };
 
 
@@ -1101,8 +1104,24 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
+  case 6: /* $@1: %empty  */
+#line 60 "Bison.y"
+    {
+        printf("Nombre de fichero: %s\n", (yyvsp[0].filename));
 
-#line 1106 "Bison.tab.c"
+        /* abrir y empujar buffer… */
+        FILE *f = fopen((yyvsp[0].filename),"r");
+        if(!f){
+            printf("El archivo : %s no existe", (yyvsp[0].filename)); 
+            return EXIT_FAILURE; 
+        }
+        if (f) push_buffer_for_file(f);
+    }
+#line 1121 "Bison.tab.c"
+    break;
+
+
+#line 1125 "Bison.tab.c"
 
       default: break;
     }
@@ -1295,7 +1314,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 107 "Bison.y"
+#line 122 "Bison.y"
 
 
 int main(int argc, char **argv) {
@@ -1312,10 +1331,10 @@ int main(int argc, char **argv) {
 
             printf("=== Analizando %s ===\n", argv[i]);
             if (yyparse() == 0) {
-                printf("Entrada válida en %s.\n\n", argv[i]);
+                printf("Entrada válida en %s \n\n", argv[i]);
                 
             } else {
-                printf("Entrada NO válida en %s.\n\n", argv[i]);
+                printf("Entrada NO válida en %s \n\n", argv[i]);
                 return EXIT_FAILURE;
             }
 
