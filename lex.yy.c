@@ -503,9 +503,21 @@ char *yytext_ptr;
 
     unsigned int intentosMax = 0;
     unsigned int configDesfase = 0;
+    unsigned int intentosUtilizados = 0;
+    
+    unsigned int contadorChar = 0;
+    unsigned int ascii = 0;
+    bool primeraLinea = false; 
+    bool encntradoEnEncabezado = false; 
+    bool empezarAlf = false;
 
-#line 507 "lex.yy.c"
-#line 508 "lex.yy.c"
+    unsigned int letraIndex = 0;
+    
+    std::unordered_map<char, char> asociacion_letras;
+    char letras[20];
+
+#line 519 "lex.yy.c"
+#line 520 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -722,10 +734,10 @@ YY_DECL
 		}
 
 	{
-#line 20 "scanner.l"
+#line 31 "scanner.l"
 
 
-#line 728 "lex.yy.c"
+#line 740 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -795,73 +807,108 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 22 "scanner.l"
+#line 33 "scanner.l"
 {
-    
+    if (!encntradoEnEncabezado && primeraLinea ){
+        intentosUtilizados++;
+    }
+        
+    if(primeraLinea == true && !empezarAlf){
+        printf("Entro al if ");
+        primeraLinea = false ;
+        contadorChar = 0;
+        empezarAlf = true;
+    }
+    if(primeraLinea && empezarAlf){
+        primeraLinea = false ;
+    }
+
     return ENTER; 
 }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 27 "scanner.l"
+#line 51 "scanner.l"
 { /* nada: ignora carriage return */ }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 29 "scanner.l"
+#line 53 "scanner.l"
 {
     /* yytext = "#File1.fasta,10,2" */
     char fname[256];
     int n1, n2;
-    if (sscanf(yytext + 1, "%255[^,],%d,%d", fname, &configDesfase, &configDesfase) == 3) {
-        printf("numero1: %d\n", configDesfase);
-        printf("numero2: %d\n", configDesfase);
-        printf("File Name: %s\n", fname);
+    if (sscanf(yytext + 1, "%255[^,],%d,%d", fname, &configDesfase, &intentosMax) == 3) {
         yylval.filename = fname;
+        encntradoEnEncabezado = false; 
         return ENTRADAHASH;
     }
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 42 "scanner.l"
+#line 64 "scanner.l"
 {
-    printf("FLECHA ");
+    
+    primeraLinea = true; 
+    if (!empezarAlf )
+        contadorChar = 4;
     return FLECHA;
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 47 "scanner.l"
+#line 72 "scanner.l"
 {
     return SPACE;
 }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 52 "scanner.l"
+#line 77 "scanner.l"
 {
         return HASH;
     }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 56 "scanner.l"
+#line 81 "scanner.l"
 {
+        
+        if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
+                contadorChar++; 
+                    if (contadorChar == configDesfase) {
+                        ascii = (unsigned char) yytext[0];
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        configDesfase = ascii;
+                        encntradoEnEncabezado = true; 
+                    }
+            }
+        
         return PUNCTFASTA;
         }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 60 "scanner.l"
+#line 96 "scanner.l"
 {
+            if (primeraLinea && contadorChar <= configDesfase && !empezarAlf ) {
+                contadorChar++; 
+                    if (contadorChar == configDesfase) {
+                        ascii = (unsigned char) yytext[0];
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        configDesfase = ascii;
+                        encntradoEnEncabezado = true; 
+                    }
+            }
+            
             yylval.num = atoi(yytext);
             return ENTERO;
         }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 65 "scanner.l"
+#line 111 "scanner.l"
 {
     /* yytext es un solo carácter de puntuación */
     yylval.palabra = strdup(yytext);
@@ -870,24 +917,68 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 73 "scanner.l"
+#line 119 "scanner.l"
 {
-    
-    yylval.palabra = strdup(yytext);
-    return CHARMA;
+        if (primeraLinea && contadorChar <= configDesfase && !empezarAlf ) {
+            contadorChar++; 
+            
+            if (contadorChar == configDesfase) {
+                ascii = (unsigned char) yytext[0];
+            /* ahora ascii tiene el código ASCII de ese carácter */
+            configDesfase = ascii;
+            encntradoEnEncabezado = true; 
+            }
+        }  
+        if (encntradoEnEncabezado && !primeraLinea){
+            contadorChar++; 
+            printf("%d", contadorChar);
+            printf("%c", yytext[0]);
+                if (contadorChar == configDesfase){
+                    
+                    bool existe = false;
+                        for (int i = 0; i < letraIndex; i++) {
+                            if (letras[i] == yytext[0]) {
+                                existe = true;
+                                break;
+                            }
+                        }
+                        if (!existe && letraIndex < 20) {
+                            letras[letraIndex] = yytext[0];
+                            letraIndex++;
+                            printf("Encontro la letra %c y la puso en el index : %d ",yytext[0], letraIndex);
+                            if (letraIndex >= 20) {
+                                for( int i = 0; i< 20; i++){
+                                    printf("Letra : %c \n" ,letras[i] );
+                                }
+                            }
+                        }
+                    contadorChar = 0; 
+                }
+        }
+        yylval.palabra = strdup(yytext);
+        return CHARMA;
     }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 79 "scanner.l"
+#line 160 "scanner.l"
 {
-    yylval.palabra = strdup(yytext);
-    return CHARMI;
+        if (primeraLinea && contadorChar <= configDesfase && !empezarAlf) {
+            contadorChar++; 
+            if (contadorChar == configDesfase) {
+                ascii = (unsigned char) yytext[0];
+            /* ahora ascii tiene el código ASCII de ese carácter */
+            configDesfase = ascii;
+            encntradoEnEncabezado = true; 
+            }
+        }
+        yylval.palabra = strdup(yytext);
+        return CHARMI;
     }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 85 "scanner.l"
+#line 175 "scanner.l"
 {
     unsigned char c = yytext[0];
     fprintf(stderr,
@@ -899,10 +990,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 97 "scanner.l"
+#line 187 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 905 "lex.yy.c"
+#line 996 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1919,7 +2010,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 97 "scanner.l"
+#line 187 "scanner.l"
 
 
 int yywrap(void) { return 1; }
