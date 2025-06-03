@@ -37,7 +37,10 @@
     bool empezarAlf = false;
     bool encriptar = false;
     bool first = false; 
+    bool oppen = true;
+    bool esArchivoTexto = false;
     char fname[256];
+    char *segundoArchivo = NULL;
 
 
     unsigned int letraIndex = 0;
@@ -47,6 +50,8 @@
 
 
     extern void BEGIN(int estado);
+
+    std::unordered_map<char, char> InvertirAlfabeto(const std::unordered_map<char, char>& mapaOriginal);
 %}
 
 %union {
@@ -135,6 +140,7 @@ bloque:
             contadorChar = 4;
     }elementosdos
     | DECHASHOTRO {
+        esArchivoTexto = true;
         printf("entro");
         char* texto = $1;
         char fname[256];
@@ -155,6 +161,7 @@ bloque:
             return EXIT_FAILURE; 
         }
         if (f) push_buffer_for_file(f);
+        
     }
     
 ;
@@ -304,7 +311,34 @@ elemento_post:
                                 letraIndex = 0; 
                                 encriptar = true;
                                 first = true; 
-                                yypop_buffer_state();
+
+                                if(esArchivoTexto){
+                                    /* abrir y empujar buffer…*/ 
+                                    asociacion_letras = InvertirAlfabeto(asociacion_letras);
+                                    for (int i = 0; i < 256; i++) {
+                                        if (asociacion_letras[i] != 0) {
+                                            printf("'%c' -> '%c'\n", i, asociacion_letras[i]);
+                                        }
+                                    }
+                                    if(!oppen){
+                                        printf("El archivo que va a leer es: %s \n \n", segundoArchivo);
+                                        FILE *f = fopen(segundoArchivo,"r");
+                                    
+                                        if(!f){
+                                            printf("El archivo : %s no existe", $1); 
+                                            return EXIT_FAILURE; 
+                                        }
+                                        if (f) push_buffer_for_file(f);
+                                        oppen = true; 
+                                    }else{
+                                        yypop_buffer_state();
+                                        yypop_buffer_state();
+                                    }
+                                    
+                                    
+                                }else{
+                                    yypop_buffer_state();
+                                }
                             }
                         }
                     contadorChar = 0; 
@@ -432,6 +466,12 @@ int main(int argc, char **argv) {
             fprintf(stderr, "No se pudo abrir archivo_encriptado.txt\n");
             return EXIT_FAILURE;
         }
+    }else{
+        archivoSalida.open("Original_document.txt");
+        if (!archivoSalida.is_open()) {
+            fprintf(stderr, "No se pudo abrir archivo_encriptado.txt\n");
+            return EXIT_FAILURE;
+        }
     }
 
     if (argc > 1) {
@@ -478,4 +518,15 @@ int main(int argc, char **argv) {
     decode.close();
 
     return EXIT_SUCCESS;
+}
+
+std::unordered_map<char, char> InvertirAlfabeto(const std::unordered_map<char, char>& alfabeto) {
+    std::unordered_map<char, char> alfabetoInvertido;
+
+    for (const auto& par : alfabeto) {
+        // Si hay colisiones, esta operación sobrescribirá los duplicados
+        alfabetoInvertido[par.second] = par.first;
+    }
+
+    return alfabetoInvertido;
 }
