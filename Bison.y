@@ -1,6 +1,7 @@
 %{
     #include <stdio.h>
     #include <stdlib.h>
+    #include <unordered_map> 
 
     int yylex(void);
     extern FILE *yyin;
@@ -13,26 +14,40 @@
     extern void yyrestart(FILE *input_file);
 
     void extern push_buffer_for_file(FILE *f);
+
+    unsigned int intentosMax = 0;
+    unsigned int configDesfase = 0;
+    unsigned int intentosUtilizados = 0;
+    
+    unsigned int contadorChar = 0;
+    unsigned int ascii = 0;
+    bool primeraLinea = false; 
+    bool encntradoEnEncabezado = false; 
+    bool empezarAlf = false;
+
+    unsigned int letraIndex = 0;
+    
+    std::unordered_map<char, char> asociacion_letras;
+    char letras[20];
 %}
 
 %union {
     
     int       num;
     char*     filename;
-    char*     palabra;
-    char*     punc;
+    char     caracter;
 }
 
 
 %token <filename> ENTRADAHASH
-%token <palabra>  CHARMA
-%token <palabra>  CHARMI
-%token <palabra>  PUNCT
-%token            ENTERO
+%token <caracter>  CHARMA
+%token <caracter>  CHARMI
+%token <caracter>  PUNCT
+%token <num>      ENTERO
 %token            ERROR
 %token            HASH
 %token            FLECHA
-%token            PUNCTFASTA
+%token <caracter> PUNCTFASTA
 %token            SPACE 
 %token            ENTER
 
@@ -57,24 +72,57 @@ bloques:
 
 bloque:
     ENTRADAHASH 
-    {
-        printf("Nombre de fichero: %s\n", $1);
+    { 
+        char* texto = $1;
+        char fname[256];
+        int n1, n2;
+
+        if (sscanf(texto, "#%255[^,],%d,%d", fname, &configDesfase, &intentosMax) == 3) {
+            printf("Nombre de fichero: %s\n", fname);
+            printf("  n1 = %d, n2 = %d\n", n1, n2);
+        } else {
+            yyerror((char *)"Formato inválido: se esperaba #<Nombre.fasta>,<num1>,<num2>");
+        }
+
+        
 
         /* abrir y empujar buffer… */
-        FILE *f = fopen($1,"r");
+        FILE *f = fopen(fname,"r");
         if(!f){
             printf("El archivo : %s no existe", $1); 
             return EXIT_FAILURE; 
         }
-        if (f) push_buffer_for_file(f);
+        if (f) {
+            printf("cambiando a fasta");
+        }push_buffer_for_file(f);
     }
     
     elementos
-    | FLECHA elementosdos
+    | FLECHA {
+        primeraLinea = true; 
+        if (!empezarAlf )
+            contadorChar = 4;
+        printf("El valor de contadorChar es: %d\n", contadorChar);
+
+    }elementosdos
 ;
 
 elementosdos:
-    pre_enter ENTER post_enter
+    pre_enter ENTER{
+            if (!encntradoEnEncabezado && primeraLinea ){
+            intentosUtilizados++;
+        }
+            
+        if(primeraLinea == true && !empezarAlf){
+            printf("Entro al if ");
+            primeraLinea = false ;
+            contadorChar = 0;
+            empezarAlf = true;
+        }
+        if(primeraLinea && empezarAlf){
+            primeraLinea = false ;
+        }
+    } post_enter
 ;
 
 pre_enter:
@@ -84,9 +132,39 @@ pre_enter:
 
 elemento_pre:
     CHARMA
-    | CHARMI
-    | PUNCTFASTA
-    | ENTERO    
+    | CHARMI{
+            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
+                contadorChar++; 
+                    if (contadorChar == configDesfase) {
+                        ascii = (unsigned char) $1;
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        configDesfase = ascii;
+                        encntradoEnEncabezado = true; 
+                    }
+            }
+    }
+    | PUNCTFASTA{
+        if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
+                contadorChar++; 
+                    if (contadorChar == configDesfase) {
+                        ascii = (unsigned char) $1;
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        configDesfase = ascii;
+                        encntradoEnEncabezado = true; 
+                    }
+            }
+    }
+    | ENTERO   {
+        if (primeraLinea && contadorChar <= configDesfase && !empezarAlf ) {
+                contadorChar++; 
+                    if (contadorChar == configDesfase) {
+                        ascii = (unsigned char) $1;
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        configDesfase = ascii;
+                        encntradoEnEncabezado = true; 
+                    }
+            }
+    }
 ;
 
 post_enter:
@@ -95,10 +173,68 @@ post_enter:
 ;
 
 elemento_post:
-    CHARMA
-    | PUNCTFASTA
+    CHARMA{
+            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
+                contadorChar++; 
+                    if (contadorChar == configDesfase) {
+                        ascii = (unsigned int) $1;
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        printf("Código ASCII: %u\n", ascii);
+                        configDesfase = ascii;
+                        encntradoEnEncabezado = true; 
+                    }
+            }
+            contadorChar++; 
+                if (contadorChar == configDesfase){
+                    
+                    bool existe = false;
+                        for (int i = 0; i < letraIndex; i++) {
+                            if (letras[i] == $1) {
+                                existe = true;
+                                break;
+                            }
+                        }
+                        if (!existe && letraIndex < 20) {
+                            letras[letraIndex] = $1;
+                            letraIndex++;
+                            printf("Encontro la letra %c y la puso en el index : %d ",$1, letraIndex);
+                            if (letraIndex >= 20) {
+                                for( int i = 0; i< 20; i++){
+                                    printf("Letra : %c \n" ,letras[i] );
+                                }
+                            }
+                        }
+                    contadorChar = 0; 
+                }
+    }
+    | PUNCTFASTA{
+            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
+                contadorChar++; 
+                    if (contadorChar == configDesfase) {
+                        ascii = (unsigned int) $1;
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        printf("Código ASCII: %u\n", ascii);
+                        configDesfase = ascii;
+                        encntradoEnEncabezado = true; 
+                    }
+            }
+    }
     | ENTERO
-    |   ENTER
+    |   ENTER {
+        if (!encntradoEnEncabezado && primeraLinea ){
+        intentosUtilizados++;
+    }
+        
+    if(primeraLinea == true && !empezarAlf){
+        printf("Entro al if ");
+        primeraLinea = false ;
+        contadorChar = 0;
+        empezarAlf = true;
+    }
+    if(primeraLinea && empezarAlf){
+        primeraLinea = false ;
+    }
+    }
 ;
 
 elementos:
@@ -111,7 +247,21 @@ elemento:
     CHARMA
     | PUNCT 
     | SPACE
-    | ENTER
+    | ENTER {
+        if (!encntradoEnEncabezado && primeraLinea ){
+            intentosUtilizados++;
+        }
+            
+        if(primeraLinea == true && !empezarAlf){
+            printf("Entro al if ");
+            primeraLinea = false ;
+            contadorChar = 0;
+            empezarAlf = true;
+        }
+        if(primeraLinea && empezarAlf){
+            primeraLinea = false ;
+        }
+    }
     | CHARMI
 ;
 

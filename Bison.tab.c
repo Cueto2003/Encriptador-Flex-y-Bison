@@ -71,6 +71,7 @@
 
     #include <stdio.h>
     #include <stdlib.h>
+    #include <unordered_map> 
 
     int yylex(void);
     extern FILE *yyin;
@@ -84,7 +85,22 @@
 
     void extern push_buffer_for_file(FILE *f);
 
-#line 88 "Bison.tab.c"
+    unsigned int intentosMax = 0;
+    unsigned int configDesfase = 0;
+    unsigned int intentosUtilizados = 0;
+    
+    unsigned int contadorChar = 0;
+    unsigned int ascii = 0;
+    bool primeraLinea = false; 
+    bool encntradoEnEncabezado = false; 
+    bool empezarAlf = false;
+
+    unsigned int letraIndex = 0;
+    
+    std::unordered_map<char, char> asociacion_letras;
+    char letras[20];
+
+#line 104 "Bison.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -131,13 +147,15 @@ enum yysymbol_kind_t
   YYSYMBOL_bloques = 16,                   /* bloques  */
   YYSYMBOL_bloque = 17,                    /* bloque  */
   YYSYMBOL_18_1 = 18,                      /* $@1  */
-  YYSYMBOL_elementosdos = 19,              /* elementosdos  */
-  YYSYMBOL_pre_enter = 20,                 /* pre_enter  */
-  YYSYMBOL_elemento_pre = 21,              /* elemento_pre  */
-  YYSYMBOL_post_enter = 22,                /* post_enter  */
-  YYSYMBOL_elemento_post = 23,             /* elemento_post  */
-  YYSYMBOL_elementos = 24,                 /* elementos  */
-  YYSYMBOL_elemento = 25                   /* elemento  */
+  YYSYMBOL_19_2 = 19,                      /* $@2  */
+  YYSYMBOL_elementosdos = 20,              /* elementosdos  */
+  YYSYMBOL_21_3 = 21,                      /* $@3  */
+  YYSYMBOL_pre_enter = 22,                 /* pre_enter  */
+  YYSYMBOL_elemento_pre = 23,              /* elemento_pre  */
+  YYSYMBOL_post_enter = 24,                /* post_enter  */
+  YYSYMBOL_elemento_post = 25,             /* elemento_post  */
+  YYSYMBOL_elementos = 26,                 /* elementos  */
+  YYSYMBOL_elemento = 27                   /* elemento  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -463,18 +481,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  14
+#define YYFINAL  8
 /* YYLAST -- Last index in YYTABLE.  */
 #define YYLAST   28
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  14
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  12
+#define YYNNTS  14
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  28
+#define YYNRULES  30
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  33
+#define YYNSTATES  35
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   268
@@ -522,11 +540,12 @@ static const yytype_int8 yytranslate[] =
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int8 yyrline[] =
+static const yytype_int16 yyrline[] =
 {
-       0,    47,    47,    50,    54,    55,    60,    59,    73,    77,
-      81,    82,    86,    87,    88,    89,    93,    94,    98,    99,
-     100,   101,   105,   106,   111,   112,   113,   114,   115
+       0,    62,    62,    65,    69,    70,    75,    74,   101,   101,
+     111,   111,   129,   130,   134,   135,   146,   157,   171,   172,
+     176,   210,   222,   223,   241,   242,   247,   248,   249,   250,
+     265
 };
 #endif
 
@@ -545,8 +564,8 @@ static const char *const yytname[] =
   "\"end of file\"", "error", "\"invalid token\"", "ENTRADAHASH",
   "CHARMA", "CHARMI", "PUNCT", "ENTERO", "ERROR", "HASH", "FLECHA",
   "PUNCTFASTA", "SPACE", "ENTER", "$accept", "prog", "bloques", "bloque",
-  "$@1", "elementosdos", "pre_enter", "elemento_pre", "post_enter",
-  "elemento_post", "elementos", "elemento", YY_NULLPTR
+  "$@1", "$@2", "elementosdos", "$@3", "pre_enter", "elemento_pre",
+  "post_enter", "elemento_post", "elementos", "elemento", YY_NULLPTR
 };
 
 static const char *
@@ -556,7 +575,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-16)
+#define YYPACT_NINF (-18)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -570,10 +589,10 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      18,   -16,    12,     5,    18,   -16,    -4,   -16,   -16,   -16,
-     -16,   -16,    -1,   -16,   -16,   -16,   -16,   -16,   -16,   -16,
-     -16,   -16,    -4,     7,   -16,   -16,   -16,   -16,   -16,   -16,
-       7,   -16,   -16
+      18,   -18,   -18,     5,    18,   -18,    -4,    12,   -18,   -18,
+     -18,   -18,   -18,   -18,   -18,   -18,    -4,   -18,   -18,   -18,
+     -18,   -18,    -1,   -18,   -18,   -18,   -18,     7,   -18,   -18,
+     -18,   -18,     7,   -18,   -18
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -581,24 +600,24 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     6,     0,     0,     3,     4,    23,    12,    13,    15,
-      14,     8,     0,    10,     1,     5,    24,    28,    25,    26,
-      27,     7,    23,     0,    11,    22,    18,    20,    19,    21,
-       9,    16,    17
+       2,     6,     8,     0,     3,     4,    25,     0,     1,     5,
+      26,    30,    27,    28,    29,     7,    25,    14,    15,    17,
+      16,     9,     0,    12,    24,    10,    13,     0,    20,    22,
+      21,    23,    11,    18,    19
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -16,   -16,   -16,     3,   -16,   -16,   -16,     1,   -16,   -15,
-       0,   -16
+     -18,   -18,   -18,     3,   -18,   -18,   -18,   -18,   -18,    -9,
+     -18,   -17,     6,   -18
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     3,     4,     5,     6,    11,    12,    13,    30,    31,
-      21,    22
+       0,     3,     4,     5,     6,     7,    21,    27,    22,    23,
+      32,    33,    15,    16
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -606,42 +625,44 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      16,    17,    18,     7,     8,    14,     9,    15,    19,    20,
-      10,    26,    23,    24,    27,    32,     7,     8,    28,     9,
-      29,     1,    25,    10,     0,     0,     0,     0,     2
+      10,    11,    12,    17,    18,     8,    19,     9,    13,    14,
+      20,    28,    25,    26,    29,    34,    17,    18,    30,    19,
+      31,     1,    24,    20,     0,     0,     0,     0,     2
 };
 
 static const yytype_int8 yycheck[] =
 {
        4,     5,     6,     4,     5,     0,     7,     4,    12,    13,
-      11,     4,    13,    12,     7,    30,     4,     5,    11,     7,
-      13,     3,    22,    11,    -1,    -1,    -1,    -1,    10
+      11,     4,    13,    22,     7,    32,     4,     5,    11,     7,
+      13,     3,    16,    11,    -1,    -1,    -1,    -1,    10
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,    10,    15,    16,    17,    18,     4,     5,     7,
-      11,    19,    20,    21,     0,    17,     4,     5,     6,    12,
-      13,    24,    25,    13,    21,    24,     4,     7,    11,    13,
-      22,    23,    23
+       0,     3,    10,    15,    16,    17,    18,    19,     0,    17,
+       4,     5,     6,    12,    13,    26,    27,     4,     5,     7,
+      11,    20,    22,    23,    26,    13,    23,    21,     4,     7,
+      11,    13,    24,    25,    25
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    14,    15,    15,    16,    16,    18,    17,    17,    19,
-      20,    20,    21,    21,    21,    21,    22,    22,    23,    23,
-      23,    23,    24,    24,    25,    25,    25,    25,    25
+       0,    14,    15,    15,    16,    16,    18,    17,    19,    17,
+      21,    20,    22,    22,    23,    23,    23,    23,    24,    24,
+      25,    25,    25,    25,    26,    26,    27,    27,    27,    27,
+      27
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     1,     1,     2,     0,     3,     2,     3,
-       1,     2,     1,     1,     1,     1,     1,     2,     1,     1,
-       1,     1,     2,     0,     1,     1,     1,     1,     1
+       0,     2,     0,     1,     1,     2,     0,     3,     0,     3,
+       0,     4,     1,     2,     1,     1,     1,     1,     1,     2,
+       1,     1,     1,     1,     2,     0,     1,     1,     1,     1,
+       1
 };
 
 
@@ -1105,23 +1126,212 @@ yyreduce:
   switch (yyn)
     {
   case 6: /* $@1: %empty  */
-#line 60 "Bison.y"
-    {
-        printf("Nombre de fichero: %s\n", (yyvsp[0].filename));
+#line 75 "Bison.y"
+    { 
+        char* texto = (yyvsp[0].filename);
+        char fname[256];
+        int n1, n2;
+
+        if (sscanf(texto, "#%255[^,],%d,%d", fname, &configDesfase, &intentosMax) == 3) {
+            printf("Nombre de fichero: %s\n", fname);
+            printf("  n1 = %d, n2 = %d\n", n1, n2);
+        } else {
+            yyerror((char *)"Formato inválido: se esperaba #<Nombre.fasta>,<num1>,<num2>");
+        }
+
+        
 
         /* abrir y empujar buffer… */
-        FILE *f = fopen((yyvsp[0].filename),"r");
+        FILE *f = fopen(fname,"r");
         if(!f){
             printf("El archivo : %s no existe", (yyvsp[0].filename)); 
             return EXIT_FAILURE; 
         }
-        if (f) push_buffer_for_file(f);
+        if (f) {
+            printf("cambiando a fasta");
+        }push_buffer_for_file(f);
     }
-#line 1121 "Bison.tab.c"
+#line 1155 "Bison.tab.c"
+    break;
+
+  case 8: /* $@2: %empty  */
+#line 101 "Bison.y"
+             {
+        primeraLinea = true; 
+        if (!empezarAlf )
+            contadorChar = 4;
+        printf("El valor de contadorChar es: %d\n", contadorChar);
+
+    }
+#line 1167 "Bison.tab.c"
+    break;
+
+  case 10: /* $@3: %empty  */
+#line 111 "Bison.y"
+                   {
+            if (!encntradoEnEncabezado && primeraLinea ){
+            intentosUtilizados++;
+        }
+            
+        if(primeraLinea == true && !empezarAlf){
+            printf("Entro al if ");
+            primeraLinea = false ;
+            contadorChar = 0;
+            empezarAlf = true;
+        }
+        if(primeraLinea && empezarAlf){
+            primeraLinea = false ;
+        }
+    }
+#line 1187 "Bison.tab.c"
+    break;
+
+  case 15: /* elemento_pre: CHARMI  */
+#line 135 "Bison.y"
+            {
+            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
+                contadorChar++; 
+                    if (contadorChar == configDesfase) {
+                        ascii = (unsigned char) (yyvsp[0].caracter);
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        configDesfase = ascii;
+                        encntradoEnEncabezado = true; 
+                    }
+            }
+    }
+#line 1203 "Bison.tab.c"
+    break;
+
+  case 16: /* elemento_pre: PUNCTFASTA  */
+#line 146 "Bison.y"
+                {
+        if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
+                contadorChar++; 
+                    if (contadorChar == configDesfase) {
+                        ascii = (unsigned char) (yyvsp[0].caracter);
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        configDesfase = ascii;
+                        encntradoEnEncabezado = true; 
+                    }
+            }
+    }
+#line 1219 "Bison.tab.c"
+    break;
+
+  case 17: /* elemento_pre: ENTERO  */
+#line 157 "Bison.y"
+               {
+        if (primeraLinea && contadorChar <= configDesfase && !empezarAlf ) {
+                contadorChar++; 
+                    if (contadorChar == configDesfase) {
+                        ascii = (unsigned char) (yyvsp[0].num);
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        configDesfase = ascii;
+                        encntradoEnEncabezado = true; 
+                    }
+            }
+    }
+#line 1235 "Bison.tab.c"
+    break;
+
+  case 20: /* elemento_post: CHARMA  */
+#line 176 "Bison.y"
+          {
+            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
+                contadorChar++; 
+                    if (contadorChar == configDesfase) {
+                        ascii = (unsigned int) (yyvsp[0].caracter);
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        printf("Código ASCII: %u\n", ascii);
+                        configDesfase = ascii;
+                        encntradoEnEncabezado = true; 
+                    }
+            }
+            contadorChar++; 
+                if (contadorChar == configDesfase){
+                    
+                    bool existe = false;
+                        for (int i = 0; i < letraIndex; i++) {
+                            if (letras[i] == (yyvsp[0].caracter)) {
+                                existe = true;
+                                break;
+                            }
+                        }
+                        if (!existe && letraIndex < 20) {
+                            letras[letraIndex] = (yyvsp[0].caracter);
+                            letraIndex++;
+                            printf("Encontro la letra %c y la puso en el index : %d ",(yyvsp[0].caracter), letraIndex);
+                            if (letraIndex >= 20) {
+                                for( int i = 0; i< 20; i++){
+                                    printf("Letra : %c \n" ,letras[i] );
+                                }
+                            }
+                        }
+                    contadorChar = 0; 
+                }
+    }
+#line 1274 "Bison.tab.c"
+    break;
+
+  case 21: /* elemento_post: PUNCTFASTA  */
+#line 210 "Bison.y"
+                {
+            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
+                contadorChar++; 
+                    if (contadorChar == configDesfase) {
+                        ascii = (unsigned int) (yyvsp[0].caracter);
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        printf("Código ASCII: %u\n", ascii);
+                        configDesfase = ascii;
+                        encntradoEnEncabezado = true; 
+                    }
+            }
+    }
+#line 1291 "Bison.tab.c"
+    break;
+
+  case 23: /* elemento_post: ENTER  */
+#line 223 "Bison.y"
+              {
+        if (!encntradoEnEncabezado && primeraLinea ){
+        intentosUtilizados++;
+    }
+        
+    if(primeraLinea == true && !empezarAlf){
+        printf("Entro al if ");
+        primeraLinea = false ;
+        contadorChar = 0;
+        empezarAlf = true;
+    }
+    if(primeraLinea && empezarAlf){
+        primeraLinea = false ;
+    }
+    }
+#line 1311 "Bison.tab.c"
+    break;
+
+  case 29: /* elemento: ENTER  */
+#line 250 "Bison.y"
+            {
+        if (!encntradoEnEncabezado && primeraLinea ){
+            intentosUtilizados++;
+        }
+            
+        if(primeraLinea == true && !empezarAlf){
+            printf("Entro al if ");
+            primeraLinea = false ;
+            contadorChar = 0;
+            empezarAlf = true;
+        }
+        if(primeraLinea && empezarAlf){
+            primeraLinea = false ;
+        }
+    }
+#line 1331 "Bison.tab.c"
     break;
 
 
-#line 1125 "Bison.tab.c"
+#line 1335 "Bison.tab.c"
 
       default: break;
     }
@@ -1314,7 +1524,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 122 "Bison.y"
+#line 272 "Bison.y"
 
 
 int main(int argc, char **argv) {

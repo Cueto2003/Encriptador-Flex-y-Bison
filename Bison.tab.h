@@ -73,15 +73,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 18 "Bison.y"
+#line 34 "Bison.y"
 
     
     int       num;
     char*     filename;
-    char*     palabra;
-    char*     punc;
+    char     caracter;
 
-#line 85 "Bison.tab.h"
+#line 84 "Bison.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

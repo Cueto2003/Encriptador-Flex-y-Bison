@@ -9,20 +9,6 @@
 
     void push_buffer_for_file(FILE *f);
 
-    unsigned int intentosMax = 0;
-    unsigned int configDesfase = 0;
-    unsigned int intentosUtilizados = 0;
-    
-    unsigned int contadorChar = 0;
-    unsigned int ascii = 0;
-    bool primeraLinea = false; 
-    bool encntradoEnEncabezado = false; 
-    bool empezarAlf = false;
-
-    unsigned int letraIndex = 0;
-    
-    std::unordered_map<char, char> asociacion_letras;
-    char letras[20];
 
 %}
 
@@ -31,19 +17,7 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
 %%
 
 \n {
-    if (!encntradoEnEncabezado && primeraLinea ){
-        intentosUtilizados++;
-    }
-        
-    if(primeraLinea == true && !empezarAlf){
-        printf("Entro al if ");
-        primeraLinea = false ;
-        contadorChar = 0;
-        empezarAlf = true;
-    }
-    if(primeraLinea && empezarAlf){
-        primeraLinea = false ;
-    }
+    
 
     return ENTER; 
 }
@@ -52,20 +26,11 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
 
 "#"[A-Za-z0-9_]+".fasta",[0-9]+,[0-9]+  {
     /* yytext = "#File1.fasta,10,2" */
-    char fname[256];
-    int n1, n2;
-    if (sscanf(yytext + 1, "%255[^,],%d,%d", fname, &configDesfase, &intentosMax) == 3) {
-        yylval.filename = fname;
-        encntradoEnEncabezado = false; 
-        return ENTRADAHASH;
-    }
+    yylval.filename = strdup(yytext);
+    return ENTRADAHASH; 
 }
 
 ">lcl|" {
-    
-    primeraLinea = true; 
-    if (!empezarAlf )
-        contadorChar = 4;
     return FLECHA;
 }
 
@@ -80,29 +45,13 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
 
 [:_.]   {
         
-        if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
-                contadorChar++; 
-                    if (contadorChar == configDesfase) {
-                        ascii = (unsigned char) yytext[0];
-                        /* ahora ascii tiene el código ASCII de ese carácter */
-                        configDesfase = ascii;
-                        encntradoEnEncabezado = true; 
-                    }
-            }
         
+        yylval.caracter = yytext[0]; 
         return PUNCTFASTA;
         }
 
 [0-9]     {
-            if (primeraLinea && contadorChar <= configDesfase && !empezarAlf ) {
-                contadorChar++; 
-                    if (contadorChar == configDesfase) {
-                        ascii = (unsigned char) yytext[0];
-                        /* ahora ascii tiene el código ASCII de ese carácter */
-                        configDesfase = ascii;
-                        encntradoEnEncabezado = true; 
-                    }
-            }
+            
             
             yylval.num = atoi(yytext);
             return ENTERO;
@@ -110,64 +59,20 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
 
 {PUNCT}  {
     /* yytext es un solo carácter de puntuación */
-    yylval.palabra = strdup(yytext);
+    yylval.caracter = yytext[0];
     return PUNCT;
 }
 
 
 
 [A-Z] {
-        if (primeraLinea && contadorChar <= configDesfase && !empezarAlf ) {
-            contadorChar++; 
-            
-            if (contadorChar == configDesfase) {
-                ascii = (unsigned char) yytext[0];
-            /* ahora ascii tiene el código ASCII de ese carácter */
-            configDesfase = ascii;
-            encntradoEnEncabezado = true; 
-            }
-        }  
-        if (encntradoEnEncabezado && !primeraLinea){
-            contadorChar++; 
-            printf("%d", contadorChar);
-            printf("%c", yytext[0]);
-                if (contadorChar == configDesfase){
-                    
-                    bool existe = false;
-                        for (int i = 0; i < letraIndex; i++) {
-                            if (letras[i] == yytext[0]) {
-                                existe = true;
-                                break;
-                            }
-                        }
-                        if (!existe && letraIndex < 20) {
-                            letras[letraIndex] = yytext[0];
-                            letraIndex++;
-                            printf("Encontro la letra %c y la puso en el index : %d ",yytext[0], letraIndex);
-                            if (letraIndex >= 20) {
-                                for( int i = 0; i< 20; i++){
-                                    printf("Letra : %c \n" ,letras[i] );
-                                }
-                            }
-                        }
-                    contadorChar = 0; 
-                }
-        }
-        yylval.palabra = strdup(yytext);
+        yylval.caracter = yytext[0];
         return CHARMA;
     }
 
 [a-z] {
-        if (primeraLinea && contadorChar <= configDesfase && !empezarAlf) {
-            contadorChar++; 
-            if (contadorChar == configDesfase) {
-                ascii = (unsigned char) yytext[0];
-            /* ahora ascii tiene el código ASCII de ese carácter */
-            configDesfase = ascii;
-            encntradoEnEncabezado = true; 
-            }
-        }
-        yylval.palabra = strdup(yytext);
+        
+        yylval.caracter = yytext[0];
         return CHARMI;
     }
 
