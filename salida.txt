@@ -1,4 +1,6 @@
+tipo de archivo .txt
 === Analizando Original_document copy.txt ===
+Regla con dos números detectada: #File1.fasta,10,2
 Nombre de fichero: File1.fasta
   n1 = 10, n2 = 2
 El archivo que va a leer es: File1.fasta 
@@ -76,7 +78,8 @@ ywathelifeforceofCharacter : P
 andoraCharacter : H
 ewitnessedbreathtakingmomentsincludingthebeautyofbioluminescentplantsandthegraceofflyingcreaturescalledbansheesCharacter : E
 achmomentdeepenedhisbondwithCharacter : N
-eytiriandtheworldaroundhimNombre de fichero: File2.fasta
+eytiriandtheworldaroundhimRegla con dos números detectada: #File2.fasta,15,2
+Nombre de fichero: File2.fasta
   n1 = 15, n2 = 2
 El archivo que va a leer es: File2.fasta 
  

@@ -9,16 +9,18 @@
 
     void push_buffer_for_file(FILE *f);
     #define YY_USE_BUFFER_STACK
-
+    extern bool esArchivoTexto;  
     
 
 %}
 
 PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
-
+%x DESENCRIPTAR
 
 
 %%
+
+
 
 \n {
     
@@ -29,11 +31,20 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
 "\x0D"       { /* nada: ignora carriage return */ }
 
 
-
-"#"[A-Za-z0-9_]+".fasta",[0-9]+,[0-9]+  {
-    /* yytext = "#File1.fasta,10,2" */
+"#"[A-Za-z0-9_]+".fasta",[0-9]+,[0-9]+,[0-9]+ {
+    // Esta regla se activa si hay tres números
     yylval.filename = strdup(yytext);
-    return ENTRADAHASH; 
+    printf("Regla con tres números detectada: %s\n", yytext);
+    BEGIN(DESENCRIPTAR);
+    printf("Se mando");
+    return DECHASHOTRO;
+}
+
+"#"[A-Za-z0-9_]+".fasta",[0-9]+,[0-9]+ {
+    // Esta regla se activa si hay solo dos números
+    yylval.filename = strdup(yytext);
+    printf("Regla con dos números detectada: %s\n", yytext);
+    return ENTRADAHASH;
 }
 
 "#"[A-Za-z0-9_]+".fasta",[0-9]+,[0-9]+,[0-9]+  {
@@ -101,7 +112,9 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
     return ERROR;
 }
 
-
+<DESENCRIPTAR>. {
+    printf("se logró\n");
+}
 
 %%
 

@@ -3,6 +3,9 @@
     #include <stdlib.h>
     #include <string>
     #include <unordered_map> 
+    #include <stdbool.h>
+
+
 
     #include <fstream>
     std::ofstream archivoSalida;
@@ -27,6 +30,7 @@
     unsigned int contadorChar = 0;
     unsigned int ascii = 0;
     unsigned int contadorSalto = 0;
+    unsigned int lineas = 0; 
 
     bool primeraLinea = false; 
     bool encntradoEnEncabezado = false; 
@@ -40,6 +44,9 @@
     std::string alfabeto_original = "ACDEFGHIKLMNPQRSTVWY";
     std::unordered_map<char, char> asociacion_letras;
     char letras[20];
+
+
+    extern void BEGIN(int estado);
 %}
 
 %union {
@@ -62,6 +69,8 @@
 %token            SPACE 
 %token            ENTER
 %token            FLEC
+%token <filename> DECHASHOTRO
+
 
 
 
@@ -125,6 +134,28 @@ bloque:
         if (!empezarAlf )
             contadorChar = 4;
     }elementosdos
+    | DECHASHOTRO {
+        printf("entro");
+        char* texto = $1;
+        char fname[256];
+        
+        if (sscanf(texto, "#%255[^,],%d,%d", fname, &configDesfase, &intentosMax, &lineas) == 4) {
+            printf("Nombre de fichero: %s\n", fname);
+            printf("  n1 = %d, n2 = %d , n3 = %d \n", configDesfase, intentosMax, lineas);
+        } else {
+            yyerror((char *)"Formato inválido: se esperaba #<Nombre.fasta>,<num1>,<num2>");
+        }
+
+        /* abrir y empujar buffer…*/ 
+        printf("El archivo que va a leer es: %s \n \n", fname);
+        FILE *f = fopen(fname,"r");
+        
+        if(!f){
+            printf("El archivo : %s no existe", $1); 
+            return EXIT_FAILURE; 
+        }
+        if (f) push_buffer_for_file(f);
+    }
     
 ;
 
@@ -362,16 +393,45 @@ elemento:
 
 int main(int argc, char **argv) {
 
-    archivoSalida.open("Original_document.cod");
-    if (!archivoSalida.is_open()) {
-        fprintf(stderr, "No se pudo abrir archivo_encriptado.txt\n");
-        return EXIT_FAILURE;
+    
+
+
+    bool esArchivoTexto = false;
+
+    const char *filename = argv[1];
+    const char *ext = strrchr(filename, '.');  // busca el último punto
+
+    if (ext != NULL) {
+        if (strcmp(ext, ".txt") == 0) {
+            printf("tipo de archivo .txt\n");
+            esArchivoTexto = true;
+        } else if (strcmp(ext, ".cod") == 0) {
+            printf("tipo de archivo .cod\n");
+            esArchivoTexto = false;
+
+            // Intercambio permanente en argv (solo afecta al programa en ejecución)
+            char *temp = argv[1];
+            argv[1] = argv[2];
+            argv[2] = temp;
+        } else {
+            fprintf(stderr, "Error: El archivo debe terminar en .txt o .cod\n");
+            return EXIT_FAILURE;
+        }
     }
 
-    decode.open("Instruction_to_decode.txt");
-    if (!decode.is_open()) {
-        fprintf(stderr, "No se pudo abrir archivo_encriptado.txt\n");
-        return EXIT_FAILURE;
+
+    if  (esArchivoTexto){
+        archivoSalida.open("Original_document.cod");
+        if (!archivoSalida.is_open()) {
+            fprintf(stderr, "No se pudo abrir archivo_encriptado.txt\n");
+            return EXIT_FAILURE;
+        }
+
+        decode.open("Instruction_to_decode.txt");
+        if (!decode.is_open()) {
+            fprintf(stderr, "No se pudo abrir archivo_encriptado.txt\n");
+            return EXIT_FAILURE;
+        }
     }
 
     if (argc > 1) {
