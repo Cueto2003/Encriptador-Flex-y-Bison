@@ -64,7 +64,8 @@ extern int yydebug;
     FLECHA = 265,                  /* FLECHA  */
     PUNCTFASTA = 266,              /* PUNCTFASTA  */
     SPACE = 267,                   /* SPACE  */
-    ENTER = 268                    /* ENTER  */
+    ENTER = 268,                   /* ENTER  */
+    FLEC = 269                     /* FLEC  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -73,14 +74,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 35 "Bison.y"
+#line 40 "Bison.y"
 
     
     int       num;
     char*     filename;
     char     caracter;
 
-#line 84 "Bison.tab.h"
+#line 85 "Bison.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

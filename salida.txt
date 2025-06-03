@@ -1,6 +1,8 @@
 === Analizando Original_document copy.txt ===
 Nombre de fichero: File1.fasta
   n1 = 10, n2 = 2
+El archivo que va a leer es: File1.fasta 
+ 
 CHARMA Carácter: T 
 CHARMA Carácter: R 
 CHARMA Carácter: I 
@@ -9,27 +11,7 @@ CHARMA Carácter: I
 CHARMA Carácter: T 
 contadorChar = 10, configDesfase = 10
 Carácter: T | Código ASCII: 84
-Entro al if Encontro la letra T y la puso en el index : 1 Encontro la letra L y la puso en el index : 2 Encontro la letra I y la puso en el index : 3 Encontro la letra G y la puso en el index : 4 Encontro la letra N y la puso en el index : 5 Encontro la letra S y la puso en el index : 6 Encontro la letra D y la puso en el index : 7 Encontro la letra M y la puso en el index : 8 Encontro la letra W y la puso en el index : 9 Encontro la letra K y la puso en el index : 10 Encontro la letra R y la puso en el index : 11 Encontro la letra V y la puso en el index : 12 Encontro la letra Q y la puso en el index : 13 Encontro la letra A y la puso en el index : 14 Encontro la letra Y y la puso en el index : 15 Encontro la letra C y la puso en el index : 16 Encontro la letra H y la puso en el index : 17 Encontro la letra P y la puso en el index : 18 Encontro la letra E y la puso en el index : 19 Encontro la letra F y la puso en el index : 20 Letra : T 
-Letra : L 
-Letra : I 
-Letra : G 
-Letra : N 
-Letra : S 
-Letra : D 
-Letra : M 
-Letra : W 
-Letra : K 
-Letra : R 
-Letra : V 
-Letra : Q 
-Letra : A 
-Letra : Y 
-Letra : C 
-Letra : H 
-Letra : P 
-Letra : E 
-Letra : F 
-'A' -> 'T'
+cgcgigmEntro al if Encontro la letra T y la puso en el index : 1 cgcgigmEncontro la letra L y la puso en el index : 2 cgcgigmEncontro la letra I y la puso en el index : 3 cgcgigmEncontro la letra G y la puso en el index : 4 cgcgigmcgcgigmEncontro la letra N y la puso en el index : 5 Encontro la letra S y la puso en el index : 6 Encontro la letra D y la puso en el index : 7 Encontro la letra M y la puso en el index : 8 cgcgigmEncontro la letra W y la puso en el index : 9 cgcgigmEncontro la letra K y la puso en el index : 10 Encontro la letra R y la puso en el index : 11 cgcgigmEncontro la letra V y la puso en el index : 12 cgcgigmEncontro la letra Q y la puso en el index : 13 cgcgigmcgcgigmEncontro la letra A y la puso en el index : 14 Encontro la letra Y y la puso en el index : 15 Encontro la letra C y la puso en el index : 16 cgcgigmcgcgigmcgcgigmcgcgigmEncontro la letra H y la puso en el index : 17 cgcgigmcgcgigmcgcgigmEncontro la letra P y la puso en el index : 18 Encontro la letra E y la puso en el index : 19 cgcgigmcgcgigmcgcgigmcgcgigmcgcgigmcgcgigmcgcgigmcgcgigmcgcgigmcgcgigmcgcgigmcgcgigmEncontro la letra F y la puso en el index : 20 'A' -> 'T'
 'B' -> 'Z'
 'C' -> 'L'
 'D' -> 'I'
@@ -55,8 +37,148 @@ Letra : F
 'X' -> 'J'
 'Y' -> 'F'
 'Z' -> 'B'
-Entrada válida en Original_document copy.txt 
-
-=== Analizando File1.fasta ===
-Entrada válida en File1.fasta 
+Character : O
+nceuponatimeinaworldunlikeourownthereexistedalandknownasCharacter : P
+andoraCharacter : T
+hisvibrantworldwasfilledwithlushforeststoweringmountainsandbreathtakingoceansCharacter : T
+henativeinhabitantsofCharacter : P
+andoraweretheCharacter : N
+avitallbluebeingswholivedinharmonywithnatureCharacter : A
+mongtheCharacter : N
+avitherewasayoungwarriornamedCharacter : N
+eytiriCharacter : S
+hewasskilledandbraveprotectinghertribefromanydangersthatlurkedintheforestsCharacter : N
+eytiriwasdeeplyconnectedtoherhomeandbelievedinthesacredbondbetweenherpeopleandthespiritsofnatureCharacter : O
+nedayhumansfromadistantplanetarrivedonCharacter : P
+andoraCharacter : T
+heysoughttoextractvaluablemineralsdisregardingthebalanceofnaturethattheCharacter : N
+avihelddearCharacter : A
+corporationsentthesehumanstotakewhattheywantedbelievingtheyweresuperiortotheCharacter : N
+aviCharacter : T
+hehumanscreatedanadvancedprogramthatallowedthemtoremotelycontrolCharacter : N
+avilikeavatarsCharacter : J
+akeCharacter : S
+ullyaformerCharacter : M
+arinewasselectedtobepartofthisprogramCharacter : H
+ewasexcitedyetconflictedabouthismissiononCharacter : P
+andoraCharacter : A
+sheenteredhisavatarbodyhefelttheincrediblestrengthandagilityoftheCharacter : N
+aviCharacter : J
+akesmissionwastogatherintelligenceforthehumansbutheslowlybegantounderstandtheCharacter : N
+avicultureCharacter : A
+shespenttimewithCharacter : N
+eytiriandhertribehelearnedtheirwaysandfeltagrowingloveforthelandCharacter : T
+hemorehelearnedthemoreherealizedthedestructionthehumanswerecausingCharacter : N
+eytiritaughtCharacter : J
+akeaboutthesacredritualsoftheCharacter : N
+aviincludingtheconnectiontoCharacter : E
+ywathelifeforceofCharacter : P
+andoraCharacter : H
+ewitnessedbreathtakingmomentsincludingthebeautyofbioluminescentplantsandthegraceofflyingcreaturescalledbansheesCharacter : E
+achmomentdeepenedhisbondwithCharacter : N
+eytiriandtheworldaroundhimNombre de fichero: File2.fasta
+  n1 = 15, n2 = 2
+El archivo que va a leer es: File2.fasta 
+ 
+CHARMA Carácter: T 
+CHARMA Carácter: R 
+CHARMA Carácter: I 
+CHARMA Carácter: N 
+CHARMA Carácter: I 
+CHARMA Carácter: T 
+CHARMA Carácter: Y 
+PUNTOFASTA Carácter: _ CHARMA Carácter: D 
+CHARMA Carácter: N 
+ENTERO Carácter: 0 contadorChar = 15, configDesfase = 15
+Carácter: 0 | Código ASCII: 48
+cgcgigmEntro al if Encontro la letra R y la puso en el index : 1 Encontro la letra L y la puso en el index : 2 Encontro la letra I y la puso en el index : 3 Encontro la letra Q y la puso en el index : 4 Encontro la letra V y la puso en el index : 5 cgcgigmEncontro la letra C y la puso en el index : 6 Encontro la letra G y la puso en el index : 7 Encontro la letra E y la puso en el index : 8 cgcgigmEncontro la letra N y la puso en el index : 9 cgcgigmEncontro la letra S y la puso en el index : 10 Encontro la letra P y la puso en el index : 11 Encontro la letra W y la puso en el index : 12 cgcgigmEncontro la letra T y la puso en el index : 13 Encontro la letra H y la puso en el index : 14 Encontro la letra K y la puso en el index : 15 Encontro la letra A y la puso en el index : 16 cgcgigmEncontro la letra F y la puso en el index : 17 cgcgigmEncontro la letra D y la puso en el index : 18 cgcgigmcgcgigmcgcgigmEncontro la letra M y la puso en el index : 19 cgcgigmEncontro la letra Y y la puso en el index : 20 'A' -> 'R'
+'B' -> 'Z'
+'C' -> 'L'
+'D' -> 'I'
+'E' -> 'Q'
+'F' -> 'V'
+'G' -> 'C'
+'H' -> 'G'
+'I' -> 'E'
+'J' -> 'X'
+'K' -> 'N'
+'L' -> 'S'
+'M' -> 'P'
+'N' -> 'W'
+'O' -> 'U'
+'P' -> 'T'
+'Q' -> 'H'
+'R' -> 'K'
+'S' -> 'A'
+'T' -> 'F'
+'U' -> 'O'
+'V' -> 'D'
+'W' -> 'M'
+'X' -> 'J'
+'Y' -> 'Y'
+'Z' -> 'B'
+Character : A
+stimepassedCharacter : J
+akefacedachoiceCharacter : H
+ecouldeithercontinueservingthehumansorstandwiththeCharacter : N
+avitoprotectCharacter : P
+andoraCharacter : T
+hecorporationdrivenbygreedmadeplansforamassiveattackontheCharacter : N
+avihomelandandCharacter : J
+akeknewhecouldnotremainsilentCharacter : W
+ithhishearttornbetweentwoworldsCharacter : J
+akemadeabolddecisionCharacter : H
+ejoinedCharacter : N
+eytiriandtheCharacter : N
+aviintheirfightagainstthehumansCharacter : T
+ogethertheyralliedthetribesofCharacter : P
+andoraunitingagainstthethreatthatloomedovertheirsacredlandCharacter : T
+hebattlebetweentheCharacter : N
+aviandthehumanswasfierceandintenseCharacter : T
+hehumansarmedwithadvancedtechnologyunderestimatedthestrengthanddeterminationoftheCharacter : N
+aviCharacter : W
+ithcourageandunitytheCharacter : N
+avifoughtfortheirhomeandthebalanceoflifeonCharacter : P
+andoraCharacter : I
+ntheheatofbattleCharacter : J
+akerevealedhistrueloyaltytotheCharacter : N
+aviCharacter : H
+ecommandedthesupportofthecreaturesofCharacter : P
+andorajoiningforceswithnaturetocounterthemachinesofdestructionCharacter : T
+heskiesfilledwiththecriesofthebansheesastheysoaredintobattleCharacter : A
+sthedustsettledtheCharacter : N
+aviemergedvictoriousCharacter : T
+heyprovedthatthepowerofnatureandunitycouldtriumphovergreedanddestructionCharacter : T
+hehumansretreatedrealizingtheirquestforresourceshadcomeatagreatcostCharacter : I
+ntheaftermathofthebattleCharacter : N
+eytiriandCharacter : J
+akestoodtogetherlookingovertheirhomelandCharacter : T
+hebondtheysharedhadgrownstrongerbuiltonloverespectandacommitmenttoprotectCharacter : P
+andoraCharacter : J
+akemadeadecisiontoremaininhisavatarbodyembracinghisnewlifeamongtheCharacter : N
+aviCharacter : J
+akeCharacter : S
+ullybecameatruememberoftheCharacter : N
+avitribeadoptingtheircustomsandphilosophiesCharacter : H
+ededicatedhislifetopreservingthebeautyofCharacter : P
+andoraandteachingothersabouttheimportanceofharmonywithnatureCharacter : N
+eytiribecamehispartnerandtogethertheyinspiredfuturegenerationsCharacter : T
+hestoryofCharacter : J
+akeandEncontro la letra N y la puso en el index : 1 Character : N
+eytirispreadthroughoutCharacter : P
+andoraremindingeveryoneoftheimportanceofunityandrespectfornatureCharacter : T
+helegacyoftheCharacter : N
+aviandtheirconnectiontoCharacter : E
+ywalivedonensuringthatthelessonslearnedwereneverforgottenCharacter : F
+romthatdayforthCharacter : P
+andorathrivedfilledwithlaughteradventureandthemagicoflifeCharacter : T
+heCharacter : N
+avicontinuedtohonortheirancestorslivinginpeaceandbalancewiththeworldaroundthemCharacter : T
+heirtalebecameasymbolofhopeteachingallthatloveandunderstandingcanovercomeeventhegreatestchallengesCharacter : A
+ndsothetaleofCharacter : A
+vatarremainedetchedintheheartsofthosewhocalledCharacter : P
+andorahomeatimelessreminderofthepowerofconnectionandthebeautyoftheirworldCharacter : E
+achgenerationpasseddownthestoriesensuringthatthebondbetweentheCharacter : N
+aviandCharacter : P
+andorawouldendureforalltimeEntrada válida en Original_document copy.txt 
 

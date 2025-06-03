@@ -8,11 +8,15 @@
     static YY_BUFFER_STATE prev             = NULL;
 
     void push_buffer_for_file(FILE *f);
+    #define YY_USE_BUFFER_STACK
 
+    
 
 %}
 
 PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
+%x ENCRIPTAR
+%x ENCONTRADO 
 
 %%
 
@@ -30,9 +34,11 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
     return ENTRADAHASH; 
 }
 
+
 ">lcl|" {
     return FLECHA;
 }
+
 
 " " {
     return SPACE;
@@ -71,7 +77,7 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
     }
 
 [a-z] {
-        
+        printf("%c",yytext[0]);
         yylval.caracter = yytext[0];
         return CHARMI;
     }
@@ -88,15 +94,22 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
 
 
 
-
 %%
 
 int yywrap(void) { return 1; }
 
 void push_buffer_for_file(FILE *f) {
+    if (!f) {
+        fprintf(stderr, "Error: archivo nulo en push_buffer_for_file\n");
+        exit(EXIT_FAILURE);
+    }
 
-    prev = YY_CURRENT_BUFFER; 
-    YY_BUFFER_STATE newb = yy_create_buffer(f, YY_BUF_SIZE);
-    yy_switch_to_buffer(newb);
+    YY_BUFFER_STATE nuevo = yy_create_buffer(f, YY_BUF_SIZE);
+    if (!nuevo) {
+        fprintf(stderr, "Error: no se pudo crear buffer\n");
+        exit(EXIT_FAILURE);
+    }
+
+    yypush_buffer_state(nuevo);  // ← Guarda el buffer actual y cambia al nuevo
 }
 

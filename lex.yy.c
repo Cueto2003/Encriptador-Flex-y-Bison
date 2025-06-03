@@ -380,12 +380,12 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static const flex_int16_t yy_accept[32] =
+static const flex_int16_t yy_accept[37] =
     {   0,
-        0,    0,   14,   12,    1,    2,    5,    9,    6,    7,
-        8,   12,   10,    7,   11,    0,    0,    0,    0,    0,
-        0,    0,    4,    0,    0,    0,    0,    0,    0,    3,
-        0
+        0,    0,    0,    0,    0,    0,   14,   12,    1,    2,
+        5,    9,    6,    7,    8,   12,   10,    7,   11,   13,
+        0,    0,    0,    0,    0,    0,    0,    4,    0,    0,
+        0,    0,    0,    0,    3,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -427,42 +427,42 @@ static const YY_CHAR yy_meta[22] =
         1
     } ;
 
-static const flex_int16_t yy_base[33] =
+static const flex_int16_t yy_base[39] =
     {   0,
-        0,    0,   39,   40,   40,   40,   40,   40,    0,   40,
-       40,   20,   40,   40,   40,   29,   20,   18,   16,   19,
-       11,   12,   40,   10,   15,   21,   18,   15,   17,   16,
-       40,   21
+        0,    0,    0,    0,    0,    0,   41,   42,   42,   42,
+       42,   42,    0,   42,   42,   22,   42,   42,   42,   42,
+       31,   22,   20,   18,   21,   13,   14,   42,   12,   17,
+       23,   20,   15,   19,   18,   42,   24,   21
     } ;
 
-static const flex_int16_t yy_def[33] =
+static const flex_int16_t yy_def[39] =
     {   0,
-       31,    1,   31,   31,   31,   31,   31,   31,   32,   31,
-       31,   31,   31,   31,   31,   32,   31,   31,   31,   31,
-       31,   31,   31,   31,   31,   31,   31,   31,   31,   31,
-        0,   31
+       36,    1,   37,   37,   37,   37,   36,   36,   36,   36,
+       36,   36,   38,   36,   36,   36,   36,   36,   36,   36,
+       38,   36,   36,   36,   36,   36,   36,   36,   36,   36,
+       36,   36,   36,   36,   36,    0,   36,   36
     } ;
 
-static const flex_int16_t yy_nxt[62] =
+static const flex_int16_t yy_nxt[64] =
     {   0,
-        4,    5,    6,    7,    8,    9,    8,   10,   11,   10,
-       12,   13,   14,   15,   15,   15,   15,   15,   15,   15,
-        4,   29,   16,   28,   30,   30,   28,   27,   26,   25,
-       24,   23,   22,   21,   20,   19,   18,   17,   31,    3,
-       31,   31,   31,   31,   31,   31,   31,   31,   31,   31,
-       31,   31,   31,   31,   31,   31,   31,   31,   31,   31,
-       31
+        8,    9,   10,   11,   12,   13,   12,   14,   15,   14,
+       16,   17,   18,   19,   19,   19,   19,   19,   19,   19,
+        8,   34,   21,   33,   20,   20,   35,   35,   33,   32,
+       31,   30,   29,   28,   27,   26,   25,   24,   23,   22,
+       36,    7,   36,   36,   36,   36,   36,   36,   36,   36,
+       36,   36,   36,   36,   36,   36,   36,   36,   36,   36,
+       36,   36,   36
     } ;
 
-static const flex_int16_t yy_chk[62] =
+static const flex_int16_t yy_chk[64] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,   28,   32,   28,   30,   29,   27,   26,   25,   24,
-       22,   21,   20,   19,   18,   17,   16,   12,    3,   31,
-       31,   31,   31,   31,   31,   31,   31,   31,   31,   31,
-       31,   31,   31,   31,   31,   31,   31,   31,   31,   31,
-       31
+        1,   33,   38,   33,   37,   37,   35,   34,   32,   31,
+       30,   29,   27,   26,   25,   24,   23,   22,   21,   16,
+        7,   36,   36,   36,   36,   36,   36,   36,   36,   36,
+       36,   36,   36,   36,   36,   36,   36,   36,   36,   36,
+       36,   36,   36
     } ;
 
 /* Table of booleans, true if rule could match eol. */
@@ -500,12 +500,17 @@ char *yytext_ptr;
     static YY_BUFFER_STATE prev             = NULL;
 
     void push_buffer_for_file(FILE *f);
+    #define YY_USE_BUFFER_STACK
 
+    
 
-#line 505 "lex.yy.c"
-#line 506 "lex.yy.c"
+#line 507 "lex.yy.c"
+
+#line 509 "lex.yy.c"
 
 #define INITIAL 0
+#define ENCRIPTAR 1
+#define ENCONTRADO 2
 
 #ifndef YY_NO_UNISTD_H
 /* Special case for "unistd.h", since it is non-ANSI. We include it way
@@ -720,10 +725,10 @@ YY_DECL
 		}
 
 	{
-#line 17 "scanner.l"
+#line 21 "scanner.l"
 
 
-#line 726 "lex.yy.c"
+#line 731 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -750,13 +755,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 32 )
+				if ( yy_current_state >= 37 )
 					yy_c = yy_meta[yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 40 );
+		while ( yy_base[yy_current_state] != 42 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -793,7 +798,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 19 "scanner.l"
+#line 23 "scanner.l"
 {
     
 
@@ -802,12 +807,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 25 "scanner.l"
+#line 29 "scanner.l"
 { /* nada: ignora carriage return */ }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 27 "scanner.l"
+#line 31 "scanner.l"
 {
     /* yytext = "#File1.fasta,10,2" */
     yylval.filename = strdup(yytext);
@@ -816,28 +821,28 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 33 "scanner.l"
+#line 38 "scanner.l"
 {
     return FLECHA;
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 37 "scanner.l"
+#line 43 "scanner.l"
 {
     return SPACE;
 }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 42 "scanner.l"
+#line 48 "scanner.l"
 {
         return HASH;
     }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 46 "scanner.l"
+#line 52 "scanner.l"
 {
         
         
@@ -847,7 +852,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 53 "scanner.l"
+#line 59 "scanner.l"
 {
             
             
@@ -857,7 +862,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 60 "scanner.l"
+#line 66 "scanner.l"
 {
     /* yytext es un solo carácter de puntuación */
     yylval.caracter = yytext[0];
@@ -866,7 +871,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 68 "scanner.l"
+#line 74 "scanner.l"
 {
         yylval.caracter = yytext[0];
         return CHARMA;
@@ -874,16 +879,16 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 73 "scanner.l"
+#line 79 "scanner.l"
 {
-        
+        printf("%c",yytext[0]);
         yylval.caracter = yytext[0];
         return CHARMI;
     }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 80 "scanner.l"
+#line 86 "scanner.l"
 {
     unsigned char c = yytext[0];
     fprintf(stderr,
@@ -895,11 +900,13 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 92 "scanner.l"
+#line 97 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 901 "lex.yy.c"
+#line 906 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
+case YY_STATE_EOF(ENCRIPTAR):
+case YY_STATE_EOF(ENCONTRADO):
 	yyterminate();
 
 	case YY_END_OF_BUFFER:
@@ -1195,7 +1202,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 32 )
+			if ( yy_current_state >= 37 )
 				yy_c = yy_meta[yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
@@ -1223,11 +1230,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 32 )
+		if ( yy_current_state >= 37 )
 			yy_c = yy_meta[yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
-	yy_is_jam = (yy_current_state == 31);
+	yy_is_jam = (yy_current_state == 36);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -1915,16 +1922,24 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 92 "scanner.l"
+#line 97 "scanner.l"
 
 
 int yywrap(void) { return 1; }
 
 void push_buffer_for_file(FILE *f) {
+    if (!f) {
+        fprintf(stderr, "Error: archivo nulo en push_buffer_for_file\n");
+        exit(EXIT_FAILURE);
+    }
 
-    prev = YY_CURRENT_BUFFER; 
-    YY_BUFFER_STATE newb = yy_create_buffer(f, YY_BUF_SIZE);
-    yy_switch_to_buffer(newb);
+    YY_BUFFER_STATE nuevo = yy_create_buffer(f, YY_BUF_SIZE);
+    if (!nuevo) {
+        fprintf(stderr, "Error: no se pudo crear buffer\n");
+        exit(EXIT_FAILURE);
+    }
+
+    yypush_buffer_state(nuevo);  // ← Guarda el buffer actual y cambia al nuevo
 }
 
 
