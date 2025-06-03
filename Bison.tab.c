@@ -76,6 +76,7 @@
 
     #include <fstream>
     std::ofstream archivoSalida;
+    std::ofstream decode;
 
     int yylex(void);
     extern FILE *yyin;
@@ -95,18 +96,22 @@
     
     unsigned int contadorChar = 0;
     unsigned int ascii = 0;
+    unsigned int contadorSalto = 0;
+
     bool primeraLinea = false; 
     bool encntradoEnEncabezado = false; 
     bool empezarAlf = false;
     bool encriptar = false;
     bool first = false; 
+    char fname[256];
+
 
     unsigned int letraIndex = 0;
     std::string alfabeto_original = "ACDEFGHIKLMNPQRSTVWY";
     std::unordered_map<char, char> asociacion_letras;
     char letras[20];
 
-#line 110 "Bison.tab.c"
+#line 115 "Bison.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -549,10 +554,10 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    69,    69,    72,    77,    78,    84,    83,   110,   110,
-     119,   119,   134,   139,   140,   145,   162,   179,   195,   214,
-     215,   220,   280,   281,   282,   299,   308,   311,   315,   316,
-     321,   324,   325,   326,   340
+       0,    74,    74,    77,    82,    83,    89,    88,   123,   123,
+     132,   132,   147,   152,   153,   158,   175,   192,   208,   227,
+     228,   233,   293,   294,   295,   313,   322,   325,   329,   330,
+     335,   338,   339,   340,   354
 };
 #endif
 
@@ -1135,8 +1140,15 @@ yyreduce:
   switch (yyn)
     {
   case 6: /* $@1: %empty  */
-#line 84 "Bison.y"
+#line 89 "Bison.y"
     { 
+        if(encriptar){
+            int aux = contadorSalto -1; 
+            decode << aux << '\n';
+            contadorSalto = 0; 
+        }
+        encriptar = false; 
+
         char* texto = (yyvsp[0].filename);
         char fname[256];
         int n1, n2;
@@ -1157,24 +1169,25 @@ yyreduce:
             return EXIT_FAILURE; 
         }
         if (f) push_buffer_for_file(f);
-        encriptar = false; 
+        
         first = false;
+        decode << "#" << fname << "," << configDesfase << "," << intentosMax <<",";
     }
-#line 1164 "Bison.tab.c"
+#line 1177 "Bison.tab.c"
     break;
 
   case 8: /* $@2: %empty  */
-#line 110 "Bison.y"
+#line 123 "Bison.y"
              {
         primeraLinea = true; 
         if (!empezarAlf )
             contadorChar = 4;
     }
-#line 1174 "Bison.tab.c"
+#line 1187 "Bison.tab.c"
     break;
 
   case 10: /* $@3: %empty  */
-#line 119 "Bison.y"
+#line 132 "Bison.y"
                    {
             if (!encntradoEnEncabezado && primeraLinea ){
             intentosUtilizados++;
@@ -1190,11 +1203,11 @@ yyreduce:
             primeraLinea = false ;
         }
     }
-#line 1194 "Bison.tab.c"
+#line 1207 "Bison.tab.c"
     break;
 
   case 15: /* elemento_pre: CHARMA  */
-#line 145 "Bison.y"
+#line 158 "Bison.y"
            {
             if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf && !encntradoEnEncabezado ) {
                 contadorChar++; 
@@ -1212,11 +1225,11 @@ yyreduce:
                 }
             }
     }
-#line 1216 "Bison.tab.c"
+#line 1229 "Bison.tab.c"
     break;
 
   case 16: /* elemento_pre: CHARMI  */
-#line 162 "Bison.y"
+#line 175 "Bison.y"
             {
             
             if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf && !encntradoEnEncabezado) {
@@ -1234,11 +1247,11 @@ yyreduce:
                     }
             }
     }
-#line 1238 "Bison.tab.c"
+#line 1251 "Bison.tab.c"
     break;
 
   case 17: /* elemento_pre: PUNCTFASTA  */
-#line 179 "Bison.y"
+#line 192 "Bison.y"
                 {
         if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf && !encntradoEnEncabezado) {
                 contadorChar++; 
@@ -1255,11 +1268,11 @@ yyreduce:
                     }
             }
     }
-#line 1259 "Bison.tab.c"
+#line 1272 "Bison.tab.c"
     break;
 
   case 18: /* elemento_pre: ENTERO  */
-#line 195 "Bison.y"
+#line 208 "Bison.y"
                {
         if (primeraLinea && contadorChar <= configDesfase && !empezarAlf && !encntradoEnEncabezado) {
                 contadorChar++; 
@@ -1275,11 +1288,11 @@ yyreduce:
                     }
             }
     }
-#line 1279 "Bison.tab.c"
+#line 1292 "Bison.tab.c"
     break;
 
   case 21: /* elemento_post: CHARMA  */
-#line 220 "Bison.y"
+#line 233 "Bison.y"
           {
             contadorChar++; 
                 if (contadorChar == configDesfase){
@@ -1340,11 +1353,11 @@ yyreduce:
             }
         }
     }
-#line 1344 "Bison.tab.c"
+#line 1357 "Bison.tab.c"
     break;
 
   case 24: /* elemento_post: ENTER  */
-#line 282 "Bison.y"
+#line 295 "Bison.y"
             {
         if (!encntradoEnEncabezado && primeraLinea ){
             intentosUtilizados++;
@@ -1360,13 +1373,14 @@ yyreduce:
         }
         if(encriptar){
             archivoSalida << '\n';
+            contadorSalto++;
         }
     }
-#line 1366 "Bison.tab.c"
+#line 1380 "Bison.tab.c"
     break;
 
   case 25: /* elemento_post: CHARMI  */
-#line 299 "Bison.y"
+#line 313 "Bison.y"
             {
         if(encriptar){
             char c = (yyvsp[0].caracter);
@@ -1376,27 +1390,27 @@ yyreduce:
             archivoSalida << encriptado;
         }
     }
-#line 1380 "Bison.tab.c"
+#line 1394 "Bison.tab.c"
     break;
 
   case 26: /* elemento_post: SPACE  */
-#line 308 "Bison.y"
+#line 322 "Bison.y"
            {
         archivoSalida << ' ';
     }
-#line 1388 "Bison.tab.c"
+#line 1402 "Bison.tab.c"
     break;
 
   case 30: /* elemento: CHARMA  */
-#line 321 "Bison.y"
+#line 335 "Bison.y"
            {
         
     }
-#line 1396 "Bison.tab.c"
+#line 1410 "Bison.tab.c"
     break;
 
   case 33: /* elemento: ENTER  */
-#line 326 "Bison.y"
+#line 340 "Bison.y"
             {
         if (!encntradoEnEncabezado && primeraLinea ){
             intentosUtilizados++;
@@ -1411,11 +1425,11 @@ yyreduce:
             primeraLinea = false ;
         }
     }
-#line 1415 "Bison.tab.c"
+#line 1429 "Bison.tab.c"
     break;
 
 
-#line 1419 "Bison.tab.c"
+#line 1433 "Bison.tab.c"
 
       default: break;
     }
@@ -1608,13 +1622,19 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 347 "Bison.y"
+#line 361 "Bison.y"
 
 
 int main(int argc, char **argv) {
 
     archivoSalida.open("Original_document.cod");
     if (!archivoSalida.is_open()) {
+        fprintf(stderr, "No se pudo abrir archivo_encriptado.txt\n");
+        return EXIT_FAILURE;
+    }
+
+    decode.open("Instruction_to_decode.txt");
+    if (!decode.is_open()) {
         fprintf(stderr, "No se pudo abrir archivo_encriptado.txt\n");
         return EXIT_FAILURE;
     }
@@ -1655,5 +1675,12 @@ int main(int argc, char **argv) {
             return EXIT_FAILURE;
         }
     }
+    if(encriptar){
+        int aux = contadorSalto ; 
+        decode << aux << '\n';
+    }
+    archivoSalida.close();
+    decode.close();
+
     return EXIT_SUCCESS;
 }

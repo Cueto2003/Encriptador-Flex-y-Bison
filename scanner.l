@@ -15,8 +15,8 @@
 %}
 
 PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
-%x ENCRIPTAR
-%x ENCONTRADO 
+
+
 
 %%
 
@@ -28,9 +28,18 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
 
 "\x0D"       { /* nada: ignora carriage return */ }
 
+
+
 "#"[A-Za-z0-9_]+".fasta",[0-9]+,[0-9]+  {
     /* yytext = "#File1.fasta,10,2" */
     yylval.filename = strdup(yytext);
+    return ENTRADAHASH; 
+}
+
+"#"[A-Za-z0-9_]+".fasta",[0-9]+,[0-9]+,[0-9]+  {
+    /* yytext = "#File1.fasta,10,2" */
+    yylval.filename = strdup(yytext);
+    printf("Entro en esta mierda ");
     return ENTRADAHASH; 
 }
 

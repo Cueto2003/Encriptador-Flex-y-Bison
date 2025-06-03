@@ -6,6 +6,7 @@
 
     #include <fstream>
     std::ofstream archivoSalida;
+    std::ofstream decode;
 
     int yylex(void);
     extern FILE *yyin;
@@ -25,11 +26,15 @@
     
     unsigned int contadorChar = 0;
     unsigned int ascii = 0;
+    unsigned int contadorSalto = 0;
+
     bool primeraLinea = false; 
     bool encntradoEnEncabezado = false; 
     bool empezarAlf = false;
     bool encriptar = false;
     bool first = false; 
+    char fname[256];
+
 
     unsigned int letraIndex = 0;
     std::string alfabeto_original = "ACDEFGHIKLMNPQRSTVWY";
@@ -82,6 +87,13 @@ bloques:
 bloque:
     ENTRADAHASH 
     { 
+        if(encriptar){
+            int aux = contadorSalto -1; 
+            decode << aux << '\n';
+            contadorSalto = 0; 
+        }
+        encriptar = false; 
+
         char* texto = $1;
         char fname[256];
         int n1, n2;
@@ -102,8 +114,9 @@ bloque:
             return EXIT_FAILURE; 
         }
         if (f) push_buffer_for_file(f);
-        encriptar = false; 
+        
         first = false;
+        decode << "#" << fname << "," << configDesfase << "," << intentosMax <<",";
     }
     
     elementos
@@ -294,6 +307,7 @@ elemento_post:
         }
         if(encriptar){
             archivoSalida << '\n';
+            contadorSalto++;
         }
     }
     | CHARMI{
@@ -354,6 +368,12 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
+    decode.open("Instruction_to_decode.txt");
+    if (!decode.is_open()) {
+        fprintf(stderr, "No se pudo abrir archivo_encriptado.txt\n");
+        return EXIT_FAILURE;
+    }
+
     if (argc > 1) {
         for (int i = 1; i < argc; i++) {
             yyin = fopen(argv[i], "r");
@@ -390,5 +410,12 @@ int main(int argc, char **argv) {
             return EXIT_FAILURE;
         }
     }
+    if(encriptar){
+        int aux = contadorSalto ; 
+        decode << aux << '\n';
+    }
+    archivoSalida.close();
+    decode.close();
+
     return EXIT_SUCCESS;
 }
