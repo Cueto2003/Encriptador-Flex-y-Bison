@@ -112,8 +112,91 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
     return ERROR;
 }
 
+
+
+
+
+<DESENCRIPTAR>\n {
+    
+
+    return ENTER; 
+}
+
+<DESENCRIPTAR>"\x0D"       { /* nada: ignora carriage return */ }
+
+
+<DESENCRIPTAR>"#"[A-Za-z0-9_]+".fasta",[0-9]+,[0-9]+,[0-9]+ {
+    // Esta regla se activa si hay tres números
+    yylval.filename = strdup(yytext);
+    printf("Regla con tres números detectada: %s\n", yytext);
+    BEGIN(DESENCRIPTAR);
+    printf("Se mando");
+    return DECHASHOTRO;
+}
+
+<DESENCRIPTAR>"#"[A-Za-z0-9_]+".fasta",[0-9]+,[0-9]+,[0-9]+  {
+    /* yytext = "#File1.fasta,10,2" */
+    yylval.filename = strdup(yytext);
+    printf("Entro en esta mierda ");
+    return ENTRADAHASH; 
+}
+
+
+<DESENCRIPTAR>">lcl|" {
+    return FLECHA;
+}
+
+
+<DESENCRIPTAR>" " {
+    return SPACE;
+}
+
+
+<DESENCRIPTAR>"#" {
+        return HASH;
+    }
+
+<DESENCRIPTAR>[:_.]   {
+        
+        
+        yylval.caracter = yytext[0]; 
+        return PUNCTFASTA;
+        }
+
+<DESENCRIPTAR>[0-9]     {
+            
+            
+            yylval.caracter = yytext[0];
+            return ENTERO;
+        }
+
+<DESENCRIPTAR>{PUNCT}  {
+    /* yytext es un solo carácter de puntuación */
+    yylval.caracter = yytext[0];
+    return PUNCT;
+}
+
+
+
+<DESENCRIPTAR>[A-Z] {
+        yylval.caracter = yytext[0];
+        return CHARMA;
+    }
+
+<DESENCRIPTAR>[a-z] {
+        printf("%c",yytext[0]);
+        yylval.caracter = yytext[0];
+        return CHARMI;
+    }
+
+
 <DESENCRIPTAR>. {
-    printf("se logró\n");
+    unsigned char c = yytext[0];
+    fprintf(stderr,
+        "Carácter inesperado: '%s' (ASCII %d)\n",
+        yytext, c
+    );
+    return ERROR;
 }
 
 %%
