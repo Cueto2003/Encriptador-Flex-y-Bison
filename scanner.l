@@ -53,7 +53,7 @@ PUNCT   [\.\,\;\:\?\!\¡\¿\"()\[\]\{\}\-\'\,]
 [0-9]     {
             
             
-            yylval.num = atoi(yytext);
+            yylval.caracter = yytext[0];
             return ENTERO;
         }
 

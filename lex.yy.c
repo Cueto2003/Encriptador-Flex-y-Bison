@@ -851,7 +851,7 @@ YY_RULE_SETUP
 {
             
             
-            yylval.num = atoi(yytext);
+            yylval.caracter = yytext[0];
             return ENTERO;
         }
 	YY_BREAK

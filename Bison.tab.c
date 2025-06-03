@@ -71,6 +71,7 @@
 
     #include <stdio.h>
     #include <stdlib.h>
+    #include <string>
     #include <unordered_map> 
 
     int yylex(void);
@@ -96,11 +97,11 @@
     bool empezarAlf = false;
 
     unsigned int letraIndex = 0;
-    
+    std::string alfabeto_original = "ACDEFGHIKLMNPQRSTVWY";
     std::unordered_map<char, char> asociacion_letras;
     char letras[20];
 
-#line 104 "Bison.tab.c"
+#line 105 "Bison.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -542,10 +543,10 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    62,    62,    65,    69,    70,    75,    74,   101,   101,
-     111,   111,   129,   130,   134,   135,   146,   157,   171,   172,
-     176,   210,   222,   223,   241,   242,   247,   248,   249,   250,
-     265
+       0,    63,    63,    66,    70,    71,    76,    75,   100,   100,
+     108,   108,   126,   127,   131,   148,   165,   181,   200,   201,
+     205,   245,   246,   247,   265,   266,   271,   327,   328,   329,
+     344
 };
 #endif
 
@@ -1126,7 +1127,7 @@ yyreduce:
   switch (yyn)
     {
   case 6: /* $@1: %empty  */
-#line 75 "Bison.y"
+#line 76 "Bison.y"
     { 
         char* texto = (yyvsp[0].filename);
         char fname[256];
@@ -1134,7 +1135,7 @@ yyreduce:
 
         if (sscanf(texto, "#%255[^,],%d,%d", fname, &configDesfase, &intentosMax) == 3) {
             printf("Nombre de fichero: %s\n", fname);
-            printf("  n1 = %d, n2 = %d\n", n1, n2);
+            printf("  n1 = %d, n2 = %d\n", configDesfase, intentosMax);
         } else {
             yyerror((char *)"Formato inválido: se esperaba #<Nombre.fasta>,<num1>,<num2>");
         }
@@ -1147,27 +1148,23 @@ yyreduce:
             printf("El archivo : %s no existe", (yyvsp[0].filename)); 
             return EXIT_FAILURE; 
         }
-        if (f) {
-            printf("cambiando a fasta");
-        }push_buffer_for_file(f);
+        if (f) push_buffer_for_file(f);
     }
-#line 1155 "Bison.tab.c"
+#line 1154 "Bison.tab.c"
     break;
 
   case 8: /* $@2: %empty  */
-#line 101 "Bison.y"
+#line 100 "Bison.y"
              {
         primeraLinea = true; 
         if (!empezarAlf )
             contadorChar = 4;
-        printf("El valor de contadorChar es: %d\n", contadorChar);
-
     }
-#line 1167 "Bison.tab.c"
+#line 1164 "Bison.tab.c"
     break;
 
   case 10: /* $@3: %empty  */
-#line 111 "Bison.y"
+#line 108 "Bison.y"
                    {
             if (!encntradoEnEncabezado && primeraLinea ){
             intentosUtilizados++;
@@ -1183,70 +1180,99 @@ yyreduce:
             primeraLinea = false ;
         }
     }
-#line 1187 "Bison.tab.c"
+#line 1184 "Bison.tab.c"
+    break;
+
+  case 14: /* elemento_pre: CHARMA  */
+#line 131 "Bison.y"
+           {
+            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf && !encntradoEnEncabezado ) {
+                contadorChar++; 
+                printf("CHARMA Carácter: %c \n", (yyvsp[0].caracter));
+                if (contadorChar == configDesfase) {
+                    printf("contadorChar = %d, configDesfase = %d\n", contadorChar, configDesfase);
+
+                    ascii = (unsigned int) (yyvsp[0].caracter);
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                    printf("Carácter: %c | Código ASCII: %u\n", (yyvsp[0].caracter), ascii);
+
+                    configDesfase = ascii;
+                    encntradoEnEncabezado = true; 
+                    contadorChar = 0; 
+                }
+            }
+    }
+#line 1206 "Bison.tab.c"
     break;
 
   case 15: /* elemento_pre: CHARMI  */
-#line 135 "Bison.y"
+#line 148 "Bison.y"
             {
-            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
+            
+            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf && !encntradoEnEncabezado) {
                 contadorChar++; 
+                    printf("CHARMI Pre Carácter: %c", (yyvsp[0].caracter) );
                     if (contadorChar == configDesfase) {
-                        ascii = (unsigned char) (yyvsp[0].caracter);
+                        printf("contadorChar = %d, configDesfase = %d\n", contadorChar, configDesfase);
+
+                        ascii = (unsigned int) (yyvsp[0].caracter);
                         /* ahora ascii tiene el código ASCII de ese carácter */
+                        printf("Carácter: %c | Código ASCII: %u\n", (yyvsp[0].caracter), ascii);
+
                         configDesfase = ascii;
                         encntradoEnEncabezado = true; 
                     }
             }
     }
-#line 1203 "Bison.tab.c"
+#line 1228 "Bison.tab.c"
     break;
 
   case 16: /* elemento_pre: PUNCTFASTA  */
-#line 146 "Bison.y"
+#line 165 "Bison.y"
                 {
-        if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
+        if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf && !encntradoEnEncabezado) {
                 contadorChar++; 
+                printf("PUNTOFASTA Carácter: %c ", (yyvsp[0].caracter));
                     if (contadorChar == configDesfase) {
-                        ascii = (unsigned char) (yyvsp[0].caracter);
+                        printf("contadorChar = %d, configDesfase = %d\n", contadorChar, configDesfase);
+
+                        ascii = (unsigned int) (yyvsp[0].caracter);
                         /* ahora ascii tiene el código ASCII de ese carácter */
+                        printf("Carácter: %c | Código ASCII: %u\n", (yyvsp[0].caracter), ascii);
+
                         configDesfase = ascii;
                         encntradoEnEncabezado = true; 
                     }
             }
     }
-#line 1219 "Bison.tab.c"
+#line 1249 "Bison.tab.c"
     break;
 
   case 17: /* elemento_pre: ENTERO  */
-#line 157 "Bison.y"
+#line 181 "Bison.y"
                {
-        if (primeraLinea && contadorChar <= configDesfase && !empezarAlf ) {
+        if (primeraLinea && contadorChar <= configDesfase && !empezarAlf && !encntradoEnEncabezado) {
                 contadorChar++; 
+                printf("ENTERO Carácter: %c ", (yyvsp[0].num));
                     if (contadorChar == configDesfase) {
-                        ascii = (unsigned char) (yyvsp[0].num);
+                        printf("contadorChar = %d, configDesfase = %d\n", contadorChar, configDesfase);
+
+                        ascii = (unsigned int) (yyvsp[0].num);
                         /* ahora ascii tiene el código ASCII de ese carácter */
+                        printf("Carácter: %c | Código ASCII: %u\n", (yyvsp[0].num), ascii);
+
                         configDesfase = ascii;
                         encntradoEnEncabezado = true; 
                     }
             }
     }
-#line 1235 "Bison.tab.c"
+#line 1270 "Bison.tab.c"
     break;
 
   case 20: /* elemento_post: CHARMA  */
-#line 176 "Bison.y"
+#line 205 "Bison.y"
           {
-            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
-                contadorChar++; 
-                    if (contadorChar == configDesfase) {
-                        ascii = (unsigned int) (yyvsp[0].caracter);
-                        /* ahora ascii tiene el código ASCII de ese carácter */
-                        printf("Código ASCII: %u\n", ascii);
-                        configDesfase = ascii;
-                        encntradoEnEncabezado = true; 
-                    }
-            }
+            
             contadorChar++; 
                 if (contadorChar == configDesfase){
                     
@@ -1265,53 +1291,31 @@ yyreduce:
                                 for( int i = 0; i< 20; i++){
                                     printf("Letra : %c \n" ,letras[i] );
                                 }
+                                for (int i = 0; i < 20; i++) {
+                                    asociacion_letras[alfabeto_original[i]] = letras[i];
+                                }
+                                asociacion_letras['B'] = 'Z';
+                                asociacion_letras['J'] = 'X';
+                                asociacion_letras['O'] = 'U';
+                                asociacion_letras['U'] = 'O';
+                                asociacion_letras['Z'] = 'B';
+                                asociacion_letras['X'] = 'J';
+                                for (int i = 0; i < 256; i++) {
+                                    if (asociacion_letras[i] != 0) {
+                                        printf("'%c' -> '%c'\n", i, asociacion_letras[i]);
+                                    }
+                                }
+
                             }
                         }
                     contadorChar = 0; 
                 }
     }
-#line 1274 "Bison.tab.c"
-    break;
-
-  case 21: /* elemento_post: PUNCTFASTA  */
-#line 210 "Bison.y"
-                {
-            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
-                contadorChar++; 
-                    if (contadorChar == configDesfase) {
-                        ascii = (unsigned int) (yyvsp[0].caracter);
-                        /* ahora ascii tiene el código ASCII de ese carácter */
-                        printf("Código ASCII: %u\n", ascii);
-                        configDesfase = ascii;
-                        encntradoEnEncabezado = true; 
-                    }
-            }
-    }
-#line 1291 "Bison.tab.c"
+#line 1315 "Bison.tab.c"
     break;
 
   case 23: /* elemento_post: ENTER  */
-#line 223 "Bison.y"
-              {
-        if (!encntradoEnEncabezado && primeraLinea ){
-        intentosUtilizados++;
-    }
-        
-    if(primeraLinea == true && !empezarAlf){
-        printf("Entro al if ");
-        primeraLinea = false ;
-        contadorChar = 0;
-        empezarAlf = true;
-    }
-    if(primeraLinea && empezarAlf){
-        primeraLinea = false ;
-    }
-    }
-#line 1311 "Bison.tab.c"
-    break;
-
-  case 29: /* elemento: ENTER  */
-#line 250 "Bison.y"
+#line 247 "Bison.y"
             {
         if (!encntradoEnEncabezado && primeraLinea ){
             intentosUtilizados++;
@@ -1327,11 +1331,116 @@ yyreduce:
             primeraLinea = false ;
         }
     }
-#line 1331 "Bison.tab.c"
+#line 1335 "Bison.tab.c"
+    break;
+
+  case 26: /* elemento: CHARMA  */
+#line 271 "Bison.y"
+           {
+
+            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf && !encntradoEnEncabezado ) {
+                contadorChar++; 
+                printf("CHARMA Carácter: %c ", (yyvsp[0].caracter));
+                    if (contadorChar == configDesfase) {
+                        printf("contadorChar = %d, configDesfase = %d\n", contadorChar, configDesfase);
+
+                        ascii = (unsigned int) (yyvsp[0].caracter);
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        printf("Carácter: %c | Código ASCII: %u\n", (yyvsp[0].caracter), ascii);
+
+                        configDesfase = ascii;
+                        encntradoEnEncabezado = true; 
+                    }
+            }
+            contadorChar++; 
+            printf("contadorChar = %d\n", contadorChar);
+        
+                if (contadorChar == configDesfase){
+                    
+                    bool existe = false;
+                        for (int i = 0; i < letraIndex; i++) {
+                            if (letras[i] == (yyvsp[0].caracter)) {
+                                existe = true;
+                                break;
+                            }
+                        }
+                        if (!existe && letraIndex < 20) {
+                            letras[letraIndex] = (yyvsp[0].caracter);
+                            letraIndex++;
+                            printf("Encontro la letra %c y la puso en el index : %d ",(yyvsp[0].caracter), letraIndex);
+                            if (letraIndex >= 20) {
+                                for( int i = 0; i< 20; i++){
+                                    printf("Letra : %c \n" ,letras[i] );
+                                }
+                                for (int i = 0; i < 20; i++) {
+                                    asociacion_letras[alfabeto_original[i]] = letras[i];
+                                }
+                                asociacion_letras['B'] = 'Z';
+                                asociacion_letras['J'] = 'X';
+                                asociacion_letras['O'] = 'U';
+                                asociacion_letras['U'] = 'O';
+                                asociacion_letras['Z'] = 'B';
+                                asociacion_letras['X'] = 'J';
+                                for (int i = 0; i < 256; i++) {
+                                    if (asociacion_letras[i] != 0) {
+                                        printf("'%c' -> '%c'\n", i, asociacion_letras[i]);
+                                    }
+                                }
+
+                            }
+                        }
+                    contadorChar = 0; 
+                }
+    }
+#line 1396 "Bison.tab.c"
+    break;
+
+  case 29: /* elemento: ENTER  */
+#line 329 "Bison.y"
+            {
+        if (!encntradoEnEncabezado && primeraLinea ){
+            intentosUtilizados++;
+        }
+            
+        if(primeraLinea == true && !empezarAlf){
+            printf("Entro al if ");
+            primeraLinea = false ;
+            contadorChar = 0;
+            empezarAlf = true;
+        }
+        if(primeraLinea && empezarAlf){
+            primeraLinea = false ;
+        }
+    }
+#line 1416 "Bison.tab.c"
+    break;
+
+  case 30: /* elemento: CHARMI  */
+#line 344 "Bison.y"
+             {
+
+            printf("CHARMI Elemeto Carácter: %c", (yyvsp[0].caracter) );
+            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf && !encntradoEnEncabezado ) {
+                contadorChar++; 
+                
+                    if (contadorChar == configDesfase) {
+                        printf("contadorChar = %d, configDesfase = %d\n", contadorChar, configDesfase);
+
+                        ascii = (unsigned int) (yyvsp[0].caracter);
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        printf("Carácter: %c | Código ASCII: %u\n", (yyvsp[0].caracter), ascii);
+
+                        configDesfase = ascii;
+                        encntradoEnEncabezado = true; 
+                    }
+            }
+
+    }
+#line 1440 "Bison.tab.c"
     break;
 
 
-#line 1335 "Bison.tab.c"
+#line 1444 "Bison.tab.c"
 
       default: break;
     }
@@ -1524,7 +1633,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 272 "Bison.y"
+#line 369 "Bison.y"
 
 
 int main(int argc, char **argv) {

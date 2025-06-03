@@ -1,6 +1,7 @@
 %{
     #include <stdio.h>
     #include <stdlib.h>
+    #include <string>
     #include <unordered_map> 
 
     int yylex(void);
@@ -26,7 +27,7 @@
     bool empezarAlf = false;
 
     unsigned int letraIndex = 0;
-    
+    std::string alfabeto_original = "ACDEFGHIKLMNPQRSTVWY";
     std::unordered_map<char, char> asociacion_letras;
     char letras[20];
 %}
@@ -79,7 +80,7 @@ bloque:
 
         if (sscanf(texto, "#%255[^,],%d,%d", fname, &configDesfase, &intentosMax) == 3) {
             printf("Nombre de fichero: %s\n", fname);
-            printf("  n1 = %d, n2 = %d\n", n1, n2);
+            printf("  n1 = %d, n2 = %d\n", configDesfase, intentosMax);
         } else {
             yyerror((char *)"Formato inválido: se esperaba #<Nombre.fasta>,<num1>,<num2>");
         }
@@ -92,9 +93,7 @@ bloque:
             printf("El archivo : %s no existe", $1); 
             return EXIT_FAILURE; 
         }
-        if (f) {
-            printf("cambiando a fasta");
-        }push_buffer_for_file(f);
+        if (f) push_buffer_for_file(f);
     }
     
     elementos
@@ -102,8 +101,6 @@ bloque:
         primeraLinea = true; 
         if (!empezarAlf )
             contadorChar = 4;
-        printf("El valor de contadorChar es: %d\n", contadorChar);
-
     }elementosdos
 ;
 
@@ -131,35 +128,67 @@ pre_enter:
 ;
 
 elemento_pre:
-    CHARMA
-    | CHARMI{
-            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
+    CHARMA {
+            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf && !encntradoEnEncabezado ) {
                 contadorChar++; 
-                    if (contadorChar == configDesfase) {
-                        ascii = (unsigned char) $1;
+                printf("CHARMA Carácter: %c \n", $1);
+                if (contadorChar == configDesfase) {
+                    printf("contadorChar = %d, configDesfase = %d\n", contadorChar, configDesfase);
+
+                    ascii = (unsigned int) $1;
                         /* ahora ascii tiene el código ASCII de ese carácter */
+                    printf("Carácter: %c | Código ASCII: %u\n", $1, ascii);
+
+                    configDesfase = ascii;
+                    encntradoEnEncabezado = true; 
+                    contadorChar = 0; 
+                }
+            }
+    } 
+    | CHARMI{
+            
+            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf && !encntradoEnEncabezado) {
+                contadorChar++; 
+                    printf("CHARMI Pre Carácter: %c", $1 );
+                    if (contadorChar == configDesfase) {
+                        printf("contadorChar = %d, configDesfase = %d\n", contadorChar, configDesfase);
+
+                        ascii = (unsigned int) $1;
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        printf("Carácter: %c | Código ASCII: %u\n", $1, ascii);
+
                         configDesfase = ascii;
                         encntradoEnEncabezado = true; 
                     }
             }
     }
     | PUNCTFASTA{
-        if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
+        if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf && !encntradoEnEncabezado) {
                 contadorChar++; 
+                printf("PUNTOFASTA Carácter: %c ", $1);
                     if (contadorChar == configDesfase) {
-                        ascii = (unsigned char) $1;
+                        printf("contadorChar = %d, configDesfase = %d\n", contadorChar, configDesfase);
+
+                        ascii = (unsigned int) $1;
                         /* ahora ascii tiene el código ASCII de ese carácter */
+                        printf("Carácter: %c | Código ASCII: %u\n", $1, ascii);
+
                         configDesfase = ascii;
                         encntradoEnEncabezado = true; 
                     }
             }
     }
     | ENTERO   {
-        if (primeraLinea && contadorChar <= configDesfase && !empezarAlf ) {
+        if (primeraLinea && contadorChar <= configDesfase && !empezarAlf && !encntradoEnEncabezado) {
                 contadorChar++; 
+                printf("ENTERO Carácter: %c ", $1);
                     if (contadorChar == configDesfase) {
-                        ascii = (unsigned char) $1;
+                        printf("contadorChar = %d, configDesfase = %d\n", contadorChar, configDesfase);
+
+                        ascii = (unsigned int) $1;
                         /* ahora ascii tiene el código ASCII de ese carácter */
+                        printf("Carácter: %c | Código ASCII: %u\n", $1, ascii);
+
                         configDesfase = ascii;
                         encntradoEnEncabezado = true; 
                     }
@@ -174,16 +203,7 @@ post_enter:
 
 elemento_post:
     CHARMA{
-            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
-                contadorChar++; 
-                    if (contadorChar == configDesfase) {
-                        ascii = (unsigned int) $1;
-                        /* ahora ascii tiene el código ASCII de ese carácter */
-                        printf("Código ASCII: %u\n", ascii);
-                        configDesfase = ascii;
-                        encntradoEnEncabezado = true; 
-                    }
-            }
+            
             contadorChar++; 
                 if (contadorChar == configDesfase){
                     
@@ -202,38 +222,42 @@ elemento_post:
                                 for( int i = 0; i< 20; i++){
                                     printf("Letra : %c \n" ,letras[i] );
                                 }
+                                for (int i = 0; i < 20; i++) {
+                                    asociacion_letras[alfabeto_original[i]] = letras[i];
+                                }
+                                asociacion_letras['B'] = 'Z';
+                                asociacion_letras['J'] = 'X';
+                                asociacion_letras['O'] = 'U';
+                                asociacion_letras['U'] = 'O';
+                                asociacion_letras['Z'] = 'B';
+                                asociacion_letras['X'] = 'J';
+                                for (int i = 0; i < 256; i++) {
+                                    if (asociacion_letras[i] != 0) {
+                                        printf("'%c' -> '%c'\n", i, asociacion_letras[i]);
+                                    }
+                                }
+
                             }
                         }
                     contadorChar = 0; 
                 }
     }
-    | PUNCTFASTA{
-            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf ) {
-                contadorChar++; 
-                    if (contadorChar == configDesfase) {
-                        ascii = (unsigned int) $1;
-                        /* ahora ascii tiene el código ASCII de ese carácter */
-                        printf("Código ASCII: %u\n", ascii);
-                        configDesfase = ascii;
-                        encntradoEnEncabezado = true; 
-                    }
-            }
-    }
+    | PUNCTFASTA
     | ENTERO
-    |   ENTER {
+    | ENTER {
         if (!encntradoEnEncabezado && primeraLinea ){
-        intentosUtilizados++;
-    }
-        
-    if(primeraLinea == true && !empezarAlf){
-        printf("Entro al if ");
-        primeraLinea = false ;
-        contadorChar = 0;
-        empezarAlf = true;
-    }
-    if(primeraLinea && empezarAlf){
-        primeraLinea = false ;
-    }
+            intentosUtilizados++;
+        }
+            
+        if(primeraLinea == true && !empezarAlf){
+            printf("Entro al if ");
+            primeraLinea = false ;
+            contadorChar = 0;
+            empezarAlf = true;
+        }
+        if(primeraLinea && empezarAlf){
+            primeraLinea = false ;
+        }
     }
 ;
 
@@ -244,7 +268,62 @@ elementos:
 
 
 elemento:
-    CHARMA
+    CHARMA {
+
+            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf && !encntradoEnEncabezado ) {
+                contadorChar++; 
+                printf("CHARMA Carácter: %c ", $1);
+                    if (contadorChar == configDesfase) {
+                        printf("contadorChar = %d, configDesfase = %d\n", contadorChar, configDesfase);
+
+                        ascii = (unsigned int) $1;
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        printf("Carácter: %c | Código ASCII: %u\n", $1, ascii);
+
+                        configDesfase = ascii;
+                        encntradoEnEncabezado = true; 
+                    }
+            }
+            contadorChar++; 
+            printf("contadorChar = %d\n", contadorChar);
+        
+                if (contadorChar == configDesfase){
+                    
+                    bool existe = false;
+                        for (int i = 0; i < letraIndex; i++) {
+                            if (letras[i] == $1) {
+                                existe = true;
+                                break;
+                            }
+                        }
+                        if (!existe && letraIndex < 20) {
+                            letras[letraIndex] = $1;
+                            letraIndex++;
+                            printf("Encontro la letra %c y la puso en el index : %d ",$1, letraIndex);
+                            if (letraIndex >= 20) {
+                                for( int i = 0; i< 20; i++){
+                                    printf("Letra : %c \n" ,letras[i] );
+                                }
+                                for (int i = 0; i < 20; i++) {
+                                    asociacion_letras[alfabeto_original[i]] = letras[i];
+                                }
+                                asociacion_letras['B'] = 'Z';
+                                asociacion_letras['J'] = 'X';
+                                asociacion_letras['O'] = 'U';
+                                asociacion_letras['U'] = 'O';
+                                asociacion_letras['Z'] = 'B';
+                                asociacion_letras['X'] = 'J';
+                                for (int i = 0; i < 256; i++) {
+                                    if (asociacion_letras[i] != 0) {
+                                        printf("'%c' -> '%c'\n", i, asociacion_letras[i]);
+                                    }
+                                }
+
+                            }
+                        }
+                    contadorChar = 0; 
+                }
+    }
     | PUNCT 
     | SPACE
     | ENTER {
@@ -262,7 +341,25 @@ elemento:
             primeraLinea = false ;
         }
     }
-    | CHARMI
+    | CHARMI {
+
+            printf("CHARMI Elemeto Carácter: %c", $1 );
+            if (primeraLinea && contadorChar <= configDesfase  && !empezarAlf && !encntradoEnEncabezado ) {
+                contadorChar++; 
+                
+                    if (contadorChar == configDesfase) {
+                        printf("contadorChar = %d, configDesfase = %d\n", contadorChar, configDesfase);
+
+                        ascii = (unsigned int) $1;
+                        /* ahora ascii tiene el código ASCII de ese carácter */
+                        printf("Carácter: %c | Código ASCII: %u\n", $1, ascii);
+
+                        configDesfase = ascii;
+                        encntradoEnEncabezado = true; 
+                    }
+            }
+
+    }
 ;
 
 
