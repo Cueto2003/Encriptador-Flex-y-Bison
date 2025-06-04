@@ -32,16 +32,16 @@
     unsigned int contadorSalto = 0;
     unsigned int lineas = 0; 
 
+    bool esArchivoTexto = false;
     bool primeraLinea = false; 
     bool encntradoEnEncabezado = false; 
     bool empezarAlf = false;
     bool encriptar = false;
     bool first = false; 
-    bool oppen = true;
-    bool esArchivoTexto = false;
+    bool oppen = false;
     char fname[256];
-    char *segundoArchivo = NULL;
 
+    char *segundoArchivo = NULL;
 
     unsigned int letraIndex = 0;
     std::string alfabeto_original = "ACDEFGHIKLMNPQRSTVWY";
@@ -51,7 +51,7 @@
 
     extern void BEGIN(int estado);
 
-    std::unordered_map<char, char> InvertirAlfabeto(const std::unordered_map<char, char>& mapaOriginal);
+    std::unordered_map<char, char> InvertirAlfabeto(const std::unordered_map<char, char>& alfabeto);
 %}
 
 %union {
@@ -138,18 +138,18 @@ bloque:
         primeraLinea = true; 
         if (!empezarAlf )
             contadorChar = 4;
+            
     }elementosdos
     | DECHASHOTRO {
-        esArchivoTexto = true;
-        printf("entro");
         char* texto = $1;
         char fname[256];
-        
-        if (sscanf(texto, "#%255[^,],%d,%d", fname, &configDesfase, &intentosMax, &lineas) == 4) {
+        printf("miVariable = %s\n", encriptar ? "true" : "false");
+        first = false;
+        if (sscanf(texto, "#%255[^,],%d,%d,%d", fname, &configDesfase, &intentosMax, &lineas) == 4) {
             printf("Nombre de fichero: %s\n", fname);
-            printf("  n1 = %d, n2 = %d , n3 = %d \n", configDesfase, intentosMax, lineas);
+            printf("  n1 = %d, n2 = %d, n3 = %d\n", configDesfase, intentosMax, lineas);
         } else {
-            yyerror((char *)"Formato inválido: se esperaba #<Nombre.fasta>,<num1>,<num2>");
+            yyerror("Formato inválido: se esperaba #<Nombre.fasta>,<num1>,<num2>,<num3>");
         }
 
         /* abrir y empujar buffer…*/ 
@@ -161,9 +161,8 @@ bloque:
             return EXIT_FAILURE; 
         }
         if (f) push_buffer_for_file(f);
-        
     }
-    
+    | ENTER elemento_post
 ;
 
 elementosdos:
@@ -270,7 +269,7 @@ post_enter:
 elemento_post:
     CHARMA{
             contadorChar++; 
-                if (contadorChar == configDesfase){
+                if (contadorChar == configDesfase && !encriptar){
                     
                     bool existe = false;
                     
@@ -311,8 +310,9 @@ elemento_post:
                                 letraIndex = 0; 
                                 encriptar = true;
                                 first = true; 
-
-                                if(esArchivoTexto){
+                                
+                                
+                                if(!esArchivoTexto){
                                     /* abrir y empujar buffer…*/ 
                                     asociacion_letras = InvertirAlfabeto(asociacion_letras);
                                     for (int i = 0; i < 256; i++) {
@@ -320,6 +320,8 @@ elemento_post:
                                             printf("'%c' -> '%c'\n", i, asociacion_letras[i]);
                                         }
                                     }
+                                    
+                                    printf("Segundo archivo %s",strdup(segundoArchivo));
                                     if(!oppen){
                                         printf("El archivo que va a leer es: %s \n \n", segundoArchivo);
                                         FILE *f = fopen(segundoArchivo,"r");
@@ -344,7 +346,7 @@ elemento_post:
                     contadorChar = 0; 
                 }
         
-        if(encriptar){
+        if(encriptar && esArchivoTexto){
             if (first) {
                 first = false; // Evita que vuelva a saltarse en futuras iteraciones
             } else {
@@ -354,6 +356,22 @@ elemento_post:
                 archivoSalida << encriptado;
             }
         }
+        if(encriptar && !esArchivoTexto){
+            printf("Contador : %d" ,contadorSalto);
+            if(contadorSalto < lineas){
+                if (first) {
+                    first = false; // Evita que vuelva a saltarse en futuras iteraciones
+                } else {
+                    printf("Character : %c\n", $1);
+                    char original = $1;
+                    char encriptado = asociacion_letras.count(original) ? asociacion_letras[original] : original;
+                    archivoSalida << encriptado;
+                }
+            }else{
+                yypop_buffer_state();
+            }
+        }
+
     }
     | PUNCTFASTA
     | ENTERO
@@ -427,11 +445,6 @@ elemento:
 
 int main(int argc, char **argv) {
 
-    
-
-
-    bool esArchivoTexto = false;
-
     const char *filename = argv[1];
     const char *ext = strrchr(filename, '.');  // busca el último punto
 
@@ -444,9 +457,12 @@ int main(int argc, char **argv) {
             esArchivoTexto = false;
 
             // Intercambio permanente en argv (solo afecta al programa en ejecución)
+            
             char *temp = argv[1];
             argv[1] = argv[2];
             argv[2] = temp;
+            segundoArchivo = strdup(argv[2]);
+            
         } else {
             fprintf(stderr, "Error: El archivo debe terminar en .txt o .cod\n");
             return EXIT_FAILURE;
@@ -467,7 +483,7 @@ int main(int argc, char **argv) {
             return EXIT_FAILURE;
         }
     }else{
-        archivoSalida.open("Original_document.txt");
+        archivoSalida.open("Desencriptado.txt");
         if (!archivoSalida.is_open()) {
             fprintf(stderr, "No se pudo abrir archivo_encriptado.txt\n");
             return EXIT_FAILURE;
